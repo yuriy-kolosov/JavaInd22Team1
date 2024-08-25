@@ -1,4 +1,4 @@
-package exception;
+package pro.sky.animal_shelter_ji22_team1_app.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
