@@ -3,6 +3,8 @@ package pro.sky.animal_shelter_ji22_team1_app.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
+import pro.sky.animal_shelter_ji22_team1_app.service.UserService;
 
 import java.util.Collection;
 
@@ -35,8 +37,9 @@ public class UserController {
 
     @PutMapping()
     public ResponseEntity<UserEntity> changeUser(@RequestBody UserEntity user){
-        UserEntity user = userService.change(user);
-        return ResponseEntity.ok(user);
+        UserEntity
+                changedUser = userService.change(user);
+        return ResponseEntity.ok(changedUser);
     }
 
     @DeleteMapping("/{userId}")

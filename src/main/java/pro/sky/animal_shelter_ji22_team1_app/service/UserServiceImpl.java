@@ -1,6 +1,7 @@
 package pro.sky.animal_shelter_ji22_team1_app.service;
 
 import org.springframework.stereotype.Service;
+import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
 import pro.sky.animal_shelter_ji22_team1_app.exception.UserDoesNotExistException;
 import pro.sky.animal_shelter_ji22_team1_app.exception.UserWithThisLoginAlreadyExistException;
 import pro.sky.animal_shelter_ji22_team1_app.exception.UserWithThisPhoneAlreadyExistException;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void save(UserEntity user) {
-        if (userRepository.findByLogin(user.getLogin) != null) {
+        if (userRepository.findByLogin(user.getLogin()) != null) {
             throw new UserWithThisLoginAlreadyExistException("Пользователь с логином %s уже существует"
                     .formatted(user.getLogin()));
         }
@@ -39,8 +40,8 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserEntity change(UserEntity user) {
-        if (findById(user.geId) == null) {
-            throw new UserDoesNotExistException("Пользователя с id = %d не существует".formatted(user.getId));
+        if (findById(user.getId()) == null) {
+            throw new UserDoesNotExistException("Пользователя с id = %d не существует".formatted(user.getId()));
         }
         save(user);
         return findById(user.getId());
