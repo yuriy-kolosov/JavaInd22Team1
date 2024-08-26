@@ -1,6 +1,6 @@
-package pro.sky.animal_shelter_ji22_team1_app.user.service;
+package pro.sky.animal_shelter_ji22_team1_app.service;
 
-import pro.sky.animal_shelter_ji22_team1_app.user.entity.UserEntity;
+import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
 
 import java.util.Collection;
 

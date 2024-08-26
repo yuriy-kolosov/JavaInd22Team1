@@ -1,4 +1,4 @@
-package pro.sky.animal_shelter_ji22_team1_app.user.controller;
+package pro.sky.animal_shelter_ji22_team1_app.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pro.sky.animal_shelter_ji22_team1_app.user.entity.UserEntity;
+import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
 import pro.sky.animal_shelter_ji22_team1_app.user.exception.ErrorDto;
-import pro.sky.animal_shelter_ji22_team1_app.user.service.UserService;
+import pro.sky.animal_shelter_ji22_team1_app.service.UserService;
 
 import java.util.Collection;
 

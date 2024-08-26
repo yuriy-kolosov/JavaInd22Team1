@@ -1,4 +1,4 @@
-package pro.sky.animal_shelter_ji22_team1_app.user.entity;
+package pro.sky.animal_shelter_ji22_team1_app.entity;
 
 import jakarta.persistence.*;
 

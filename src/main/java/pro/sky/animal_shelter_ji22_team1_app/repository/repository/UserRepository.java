@@ -1,7 +1,7 @@
-package pro.sky.animal_shelter_ji22_team1_app.user.repository;
+package pro.sky.animal_shelter_ji22_team1_app.repository.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pro.sky.animal_shelter_ji22_team1_app.user.entity.UserEntity;
+import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
 
 import java.util.List;
 

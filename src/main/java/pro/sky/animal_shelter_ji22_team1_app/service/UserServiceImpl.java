@@ -1,11 +1,11 @@
-package pro.sky.animal_shelter_ji22_team1_app.user.service;
+package pro.sky.animal_shelter_ji22_team1_app.service;
 
 import org.springframework.stereotype.Service;
-import pro.sky.animal_shelter_ji22_team1_app.user.entity.UserEntity;
-import pro.sky.animal_shelter_ji22_team1_app.user.exception.UserDoesNotExistException;
-import pro.sky.animal_shelter_ji22_team1_app.user.exception.UserWithThisLoginAlreadyExistException;
-import pro.sky.animal_shelter_ji22_team1_app.user.exception.UserWithThisPhoneAlreadyExistException;
-import pro.sky.animal_shelter_ji22_team1_app.user.repository.UserRepository;
+import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
+import pro.sky.animal_shelter_ji22_team1_app.exception.UserDoesNotExistException;
+import pro.sky.animal_shelter_ji22_team1_app.exception.UserWithThisLoginAlreadyExistException;
+import pro.sky.animal_shelter_ji22_team1_app.exception.UserWithThisPhoneAlreadyExistException;
+import pro.sky.animal_shelter_ji22_team1_app.repository.repository.UserRepository;
 
 import java.util.List;
 
