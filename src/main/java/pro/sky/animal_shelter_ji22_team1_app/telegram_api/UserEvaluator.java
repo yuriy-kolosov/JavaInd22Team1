@@ -13,15 +13,15 @@ import java.util.Map;
 
 @Component
 public class UserEvaluator {
-    private final UserService userService;
+//    private final UserService userService;
     @Autowired
     private List<ClientService> clientServices;
 
     private Map<ClientType, ClientService> serviceMap = new HashMap<>();
 
-    public UserEvaluator(UserService userService) {
-        this.userService = userService;
-    }
+//    public UserEvaluator(UserService userService) {
+//        this.userService = userService;
+//    }
 
     @PostConstruct
     public void init(){
@@ -31,8 +31,8 @@ public class UserEvaluator {
         });
     }
 
-    public ClientService evaluate(Long chatId){
-        ClientType type =  clientServices.findByChatId(chatId).getClientType();
-        return serviceMap.put(type);
-    }
+//    public ClientService evaluate(Long chatId){
+//        ClientType type =  clientServices.findByChatId(chatId).getClientType();
+//        return serviceMap.put(type);
+//    }
 }
