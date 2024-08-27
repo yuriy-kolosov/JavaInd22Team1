@@ -1,3 +1,7 @@
 databaseChangeLog:
   - include:
-      file: liquibase/scripts/schema.sql
+      file:
+        - liquibase/scripts/schema.sql
+  - include:
+      file:
+        - liquibase/scripts/add_table_shelter.sql
