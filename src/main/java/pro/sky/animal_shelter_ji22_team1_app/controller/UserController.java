@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
-import pro.sky.animal_shelter_ji22_team1_app.user.exception.ErrorDto;
+import pro.sky.animal_shelter_ji22_team1_app.exception.ErrorDto;
 import pro.sky.animal_shelter_ji22_team1_app.service.UserService;
 
 import java.util.Collection;
