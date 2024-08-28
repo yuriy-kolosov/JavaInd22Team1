@@ -23,7 +23,7 @@ public class UserEntity {
 
     private String login;
 
-    private Long phone;
+    private String phone;
 
     @Column(name = "reg_date")
     private LocalDateTime registrationDate;
@@ -70,11 +70,11 @@ public class UserEntity {
         this.login = login;
     }
 
-    public Long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
