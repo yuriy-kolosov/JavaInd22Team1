@@ -26,9 +26,8 @@ public class ShelterEntity {
 
     private String rules;
 
-
     @JsonIgnore
-    @Column(name = "location_schema")
+    @Column(name = "location_scheme")
     private byte[] locationSchemeData;
 
     public ShelterEntity() {

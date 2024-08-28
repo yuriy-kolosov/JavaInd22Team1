@@ -1,5 +1,6 @@
 package pro.sky.animal_shelter_ji22_team1_app.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -8,13 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pro.sky.animal_shelter_ji22_team1_app.entity.ShelterEntity;
 import pro.sky.animal_shelter_ji22_team1_app.service.ShelterService;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**
  * Контроллер, управляющий администрированием сервиса Shelter ("Приют")
+ *
  * @author Юрий
  */
 @RestController
@@ -54,7 +58,8 @@ public class ShelterController {
             )
     })
     @GetMapping("/{shelterId}")
-    public ResponseEntity<ShelterEntity> getShelter(@PathVariable Long shelterId) {
+    public ResponseEntity<ShelterEntity> getShelter(@Parameter(name = "Уникальный номер приюта"
+            , example = "1") @PathVariable Long shelterId) {
         ShelterEntity shelters = shelterService.findShelterById(shelterId);
         return ResponseEntity.ok(shelters);
     }
@@ -65,10 +70,26 @@ public class ShelterController {
                     description = "Запись информации о новом приюте в базу данных"
             )
     })
-    @PostMapping
-    public ResponseEntity<Void> createShelter(@RequestBody ShelterEntity shelter) {
-        shelterService.saveShelter(shelter);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ShelterEntity> createShelter(@Parameter(name = "Все данные приюта, кроме схемы проезда") @RequestBody ShelterEntity shelter
+            , @Parameter(name = "Файл .jpeg со схемой проезда") @RequestParam MultipartFile shelterLocationSchemeFile) throws IOException {
+        ShelterEntity postedShelter = shelterService.saveShelter(shelter, shelterLocationSchemeFile);
+        return ResponseEntity.ok(postedShelter);
+    }
+
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Запись информации о схеме размещения (проезда) приюта в базу данных"
+            )
+    })
+    @PostMapping(value = "/location{shelterId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ShelterEntity> postShelterLocationScheme(@Parameter(name = "Уникальный номер приюта"
+            , example = "1") @PathVariable Long shelterId
+            , @Parameter(name = "Файл .jpeg со схемой проезда") @RequestParam MultipartFile shelterLocationSchemeFile) throws IOException {
+        shelterService.saveShelterLocationScheme(shelterId, shelterLocationSchemeFile);
+        ShelterEntity shelter = shelterService.findShelterById(shelterId);
+        return ResponseEntity.ok(shelter);
     }
 
     @ApiResponses({
@@ -81,12 +102,12 @@ public class ShelterController {
                     )
             )
     })
-    @PutMapping()
-    public ResponseEntity<ShelterEntity> changeShelter(@RequestBody ShelterEntity shelter) {
-        ShelterEntity changedShelter = shelterService.changeShelter(shelter);
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ShelterEntity> updateShelter(@Parameter(name = "Все данные приюта, кроме схемы проезда") @RequestBody ShelterEntity shelter
+            , @Parameter(name = "Файл .jpeg со схемой проезда") @RequestParam MultipartFile shelterLocationSchemeFile) throws IOException {
+        ShelterEntity changedShelter = shelterService.changeShelter(shelter, shelterLocationSchemeFile);
         return ResponseEntity.ok(changedShelter);
     }
-
 
     @ApiResponses({
             @ApiResponse(
@@ -95,7 +116,8 @@ public class ShelterController {
             )
     })
     @DeleteMapping("/{shelterId}")
-    public ResponseEntity<Long> deleteShelter(@PathVariable Long shelterId) {
+    public ResponseEntity<Long> deleteShelter(@Parameter(name = "Уникальный номер приюта"
+            , example = "1") @PathVariable Long shelterId) {
         shelterService.deleteShelter(shelterId);
         return ResponseEntity.ok(shelterId);
     }

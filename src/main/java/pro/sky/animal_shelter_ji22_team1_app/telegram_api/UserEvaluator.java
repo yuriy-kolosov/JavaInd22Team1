@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import pro.sky.animal_shelter_ji22_team1_app.ClientService.AutowiredService;
 import pro.sky.animal_shelter_ji22_team1_app.ClientService.ClientService;
 import pro.sky.animal_shelter_ji22_team1_app.ClientService.ClientType;
+import pro.sky.animal_shelter_ji22_team1_app.service.UserService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +32,9 @@ public class UserEvaluator {
         });
     }
 
-    public ClientService evaluate(Long chatId){
-        ClientType type =  clientServices.findByChatId(chatId).getClientType();
-        return serviceMap.put(type);
-    }
+//    public ClientService evaluate(Long chatId){
+//        ClientType type =  clientServices.findByChatId(chatId).getClientType();
+//        return serviceMap.put(type);
+//    }
+
 }
