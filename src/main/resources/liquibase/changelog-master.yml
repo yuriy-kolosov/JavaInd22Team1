@@ -5,3 +5,6 @@ databaseChangeLog:
   - include:
       file:
         - liquibase/scripts/add_table_shelter.sql
+  - - include:
+        file:
+          - liquibase/scripts/change_data_type_user_phone.sql
