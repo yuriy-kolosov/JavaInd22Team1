@@ -29,6 +29,11 @@ public class UserEntity {
     private LocalDateTime registrationDate;
 
     private String comment;
+    @Column(name = "chat_id")
+    private Long ChatId;
+
+    @Column
+    private Integer type;
 
     public Long getId() {
         return id;
@@ -92,6 +97,22 @@ public class UserEntity {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Long getChatId() {
+        return ChatId;
+    }
+
+    public void setChatId(Long chatId) {
+        ChatId = chatId;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     @Override
