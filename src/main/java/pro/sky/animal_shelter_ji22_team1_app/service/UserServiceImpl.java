@@ -5,7 +5,7 @@ import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
 import pro.sky.animal_shelter_ji22_team1_app.exception.UserDoesNotExistException;
 import pro.sky.animal_shelter_ji22_team1_app.exception.UserWithThisLoginAlreadyExistException;
 import pro.sky.animal_shelter_ji22_team1_app.exception.UserWithThisPhoneAlreadyExistException;
-import pro.sky.animal_shelter_ji22_team1_app.repository.repository.UserRepository;
+import pro.sky.animal_shelter_ji22_team1_app.repository.UserRepository;
 
 import java.util.List;
 
@@ -79,5 +79,10 @@ public class UserServiceImpl implements UserService {
             throw new UserDoesNotExistException("Пользователя с id = %d не существует".formatted(id));
         }
         delete(id);
+    }
+
+    @Override
+    public UserEntity findByChatId(Long chatId) {
+        return userRepository.findByChatId(chatId);
     }
 }
