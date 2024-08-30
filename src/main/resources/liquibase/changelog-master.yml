@@ -11,3 +11,6 @@ databaseChangeLog:
   - include:
       file:
         - liquibase/scripts/add_chat_id_at_user.sql
+  - include:
+      file:
+        - liquibase/scripts/change_data_type_users_type.sql
