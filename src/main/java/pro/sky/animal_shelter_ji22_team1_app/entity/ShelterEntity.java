@@ -2,7 +2,6 @@ package pro.sky.animal_shelter_ji22_team1_app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.util.Objects;
 
 /**
