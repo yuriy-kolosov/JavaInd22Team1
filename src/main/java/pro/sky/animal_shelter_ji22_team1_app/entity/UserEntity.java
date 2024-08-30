@@ -30,10 +30,10 @@ public class UserEntity {
 
     private String comment;
     @Column(name = "chat_id")
-    private Long ChatId;
+    private Integer chatId;
 
     @Column
-    private Integer type;
+    private String type;
 
     public Long getId() {
         return id;
@@ -99,19 +99,19 @@ public class UserEntity {
         this.comment = comment;
     }
 
-    public Long getChatId() {
-        return ChatId;
+    public Integer getChatId() {
+        return chatId;
     }
 
-    public void setChatId(Long chatId) {
-        ChatId = chatId;
+    public void setChatId(Integer chatId) {
+        chatId = chatId;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 

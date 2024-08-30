@@ -22,7 +22,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
-            Long chatId = update.message().chat().id();
+            Integer chatId = Math.toIntExact(update.message().chat().id());
             ClientService clientService = evaluator.evaluate(chatId);
             String textMessage = clientService.getGreetingText();
             SendMessage message = new SendMessage(chatId, textMessage);
