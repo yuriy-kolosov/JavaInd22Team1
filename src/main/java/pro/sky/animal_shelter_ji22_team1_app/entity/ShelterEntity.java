@@ -2,7 +2,6 @@ package pro.sky.animal_shelter_ji22_team1_app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.util.Objects;
 
 /**
@@ -26,9 +25,8 @@ public class ShelterEntity {
 
     private String rules;
 
-
     @JsonIgnore
-    @Column(name = "location_schema")
+    @Column(name = "location_scheme")
     private byte[] locationSchemeData;
 
     public ShelterEntity() {
