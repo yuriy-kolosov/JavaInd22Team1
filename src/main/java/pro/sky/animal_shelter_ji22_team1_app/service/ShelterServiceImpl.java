@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 import pro.sky.animal_shelter_ji22_team1_app.entity.ShelterEntity;
 import pro.sky.animal_shelter_ji22_team1_app.exception.ShelterDoesNotExistException;
 import pro.sky.animal_shelter_ji22_team1_app.repository.ShelterRepository;
-
 import java.io.IOException;
 import java.util.List;
 

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.animal_shelter_ji22_team1_app.entity.ShelterEntity;
 import pro.sky.animal_shelter_ji22_team1_app.service.ShelterService;
-
 import java.io.IOException;
 import java.util.Collection;
 
