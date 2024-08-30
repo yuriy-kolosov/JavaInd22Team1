@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity findByChatId(Long chatId) {
+    public UserEntity findByChatId(Integer chatId) {
         return userRepository.findByChatId(chatId);
     }
 }
