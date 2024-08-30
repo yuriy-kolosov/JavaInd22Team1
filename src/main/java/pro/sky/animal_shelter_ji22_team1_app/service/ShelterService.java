@@ -12,11 +12,11 @@ public interface ShelterService {
 
     ShelterEntity findShelterById(Long shelterId);
 
-    ShelterEntity saveShelter(ShelterEntity shelter, MultipartFile shelterLocationSchemeFile) throws IOException;
+    ShelterEntity saveShelter(ShelterEntity shelter);
+
+    ShelterEntity changeShelter(ShelterEntity shelter);
 
     void saveShelterLocationScheme(Long shelterId, MultipartFile shelterLocationSchemeFile) throws IOException;
-
-    ShelterEntity changeShelter(ShelterEntity shelter, MultipartFile shelterLocationSchemeFile) throws IOException;
 
     void deleteShelter(Long shelterId);
 

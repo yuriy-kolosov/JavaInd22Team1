@@ -3,7 +3,7 @@
 -- changeset distrog:2
 
 create table shelters (
-	id                      SERIAL          PRIMARY KEY,    -- автоинкрементируемый идентификатор приюта
+	id                      bigserial       PRIMARY KEY,    -- автоинкрементируемый идентификатор приюта
 	name                    VARCHAR(255)    NOT NULL,       -- наименование приюта
 	type                    VARCHAR(255)    NOT NULL,       -- тип приюта
 	contacts                VARCHAR(255)    NOT NULL,       -- контактная информация приюта

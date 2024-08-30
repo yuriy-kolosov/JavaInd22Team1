@@ -54,21 +54,37 @@ public class ShelterServiceImpl implements ShelterService {
      * Запись информации о приюте в базу данных
      * Используется метод репозитория {@link JpaRepository#save(Object)}
      *
-     * @param shelter                   содержит информацию о приюте
-     * @param shelterLocationSchemeFile содержит файл .jpeg со схемой проезда к приюту
+     * @param shelter содержит информацию о приюте
      * @return информация о новом приюте
-     * @throws IOException выбрасывается в случае ошибки ввода-вывода данных при чтении-записи файла
      */
     @Override
-    public ShelterEntity saveShelter(ShelterEntity shelter, MultipartFile shelterLocationSchemeFile) throws IOException {
+    public ShelterEntity saveShelter(ShelterEntity shelter) {
         if (shelterRepository.findById(shelter.getId()).isPresent()) {
             throw new RuntimeException("Приют номер %s уже присутствует в базе данных"
                     .formatted(shelter.getId()));
         } else {
             shelter.setId(null);
-            shelter.setLocationSchemeData(shelterLocationSchemeFile.getBytes());
+
             shelterRepository.save(shelter);
         }
+        return findShelterById(shelter.getId());
+    }
+
+    /**
+     * Изменение информации о приюте в базе данных
+     * Используются методы репозитория {@link JpaRepository#findById(Object)}
+     * и {@link JpaRepository#save(Object)}
+     *
+     * @param shelter содержит обновленные данные о приюте
+     * @return обновленная информация о приюте
+     */
+    @Override
+    public ShelterEntity changeShelter(ShelterEntity shelter) {
+        if (findShelterById(shelter.getId()) == null) {
+            throw new ShelterDoesNotExistException("Приют номер %d в базе данных отсутствует"
+                    .formatted(shelter.getId()));
+        }
+        shelterRepository.save(shelter);
         return findShelterById(shelter.getId());
     }
 
@@ -82,30 +98,14 @@ public class ShelterServiceImpl implements ShelterService {
      */
     @Override
     public void saveShelterLocationScheme(Long shelterId, MultipartFile shelterLocationSchemeFile) throws IOException {
-        ShelterEntity shelter = findShelterById(shelterId);
-        shelter.setLocationSchemeData(shelterLocationSchemeFile.getBytes());
-        shelterRepository.save(shelter);
-    }
-
-    /**
-     * Изменение информации о приюте в базе данных
-     * Используются методы репозитория {@link JpaRepository#findById(Object)}
-     * и {@link JpaRepository#save(Object)}
-     *
-     * @param shelter                   содержит обновленные данные о приюте
-     * @param shelterLocationSchemeFile содержит обновленный файл .jpeg со схемой проезда к приюту
-     * @return обновленная информация о приюте
-     * @throws IOException выбрасывается в случае ошибки ввода-вывода данных при чтении-записи файла
-     */
-    @Override
-    public ShelterEntity changeShelter(ShelterEntity shelter, MultipartFile shelterLocationSchemeFile) throws IOException {
-        if (findShelterById(shelter.getId()) == null) {
+        if (findShelterById(shelterId) == null) {
             throw new ShelterDoesNotExistException("Приют номер %d в базе данных отсутствует"
-                    .formatted(shelter.getId()));
+                    .formatted(shelterId));
         }
+        ShelterEntity shelter = findShelterById(shelterId);
+        shelter.setMediaType(shelterLocationSchemeFile.getContentType());
         shelter.setLocationSchemeData(shelterLocationSchemeFile.getBytes());
         shelterRepository.save(shelter);
-        return findShelterById(shelter.getId());
     }
 
     /**
