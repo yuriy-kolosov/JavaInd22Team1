@@ -33,21 +33,27 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             if (update.message().text().equals("/start")) {
                 Integer chatId = Math.toIntExact(update.message().chat().id());
 
-                String greetingTextMessage = sendGreetingMessage();
-                SendMessage greetingMessage = new SendMessage(chatId, greetingTextMessage);
-                SendResponse greetingResponse = telegramBot.execute(greetingMessage);
+                sendGreetingMessage(chatId);
 
-                MenuService clientService = evaluator.evaluate(chatId);
-                String textMessage = clientService.getGreetingText();
-                SendMessage message = new SendMessage(chatId, textMessage);
-                SendResponse response = telegramBot.execute(message);
+                sendMessageFromMenuService(chatId);
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
-    private String sendGreetingMessage(){
-        return "Доброго времени суток, я бот который помогает животным, оказавшимся в сложной ситуации, и людям, " +
-               "которые хотят найти себе нового пушистого друга, обрести то, что они ищут";
+    private void sendGreetingMessage(Integer chatId) {
+
+        String greetingText = "Доброго времени суток, я бот который помогает животным, оказавшимся в сложной ситуации, и людям, " +
+                              "которые хотят найти себе нового пушистого друга, обрести то, что они ищут";
+
+        SendMessage greetingMessage = new SendMessage(chatId, greetingText);
+        SendResponse greetingResponse = telegramBot.execute(greetingMessage);
+    }
+
+    private void sendMessageFromMenuService(Integer chatId){
+        MenuService clientService = evaluator.evaluate(chatId);
+        String textMessage = clientService.getGreetingText();
+        SendMessage message = new SendMessage(chatId, textMessage);
+        SendResponse response = telegramBot.execute(message);
     }
 }
