@@ -38,10 +38,12 @@ public class UserEvaluator {
 
     public MenuService evaluate(Integer chatId) {
         UserEntity user = userService.findByChatId(chatId);
+        Type type;
         if (user == null) {
-            return serviceMap.get(Type.NEW_CLIENT);
+           type=Type.NEW_CLIENT;
+        } else {
+            type = user.getType();
         }
-        Type type = user.getType();
         return serviceMap.get(type);
     }
 

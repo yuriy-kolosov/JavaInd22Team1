@@ -32,6 +32,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         updates.forEach(update -> {
             if (update.message().text().equals("/start")) {
                 Integer chatId = Math.toIntExact(update.message().chat().id());
+
+                String greetingTextMessage = sendGreetingMessage();
+                SendMessage greetingMessage = new SendMessage(chatId, greetingTextMessage);
+                SendResponse greetingResponse = telegramBot.execute(greetingMessage);
+
                 MenuService clientService = evaluator.evaluate(chatId);
                 String textMessage = clientService.getGreetingText();
                 SendMessage message = new SendMessage(chatId, textMessage);
@@ -39,5 +44,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
+    }
+
+    private String sendGreetingMessage(){
+        return "Доброго времени суток, я бот который помогает животным, оказавшимся в сложной ситуации, и людям, " +
+               "которые хотят найти себе нового пушистого друга, обрести то, что они ищут";
     }
 }

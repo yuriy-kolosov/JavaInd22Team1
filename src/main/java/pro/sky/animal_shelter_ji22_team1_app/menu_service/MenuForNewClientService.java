@@ -8,6 +8,6 @@ import pro.sky.animal_shelter_ji22_team1_app.entity.Type;
 public class MenuForNewClientService implements MenuService {
     @Override
     public String getGreetingText() {
-        return null;
+        return "привет новый клиент";
     }
 }
