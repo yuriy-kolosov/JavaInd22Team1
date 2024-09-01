@@ -1,15 +1,12 @@
 package pro.sky.animal_shelter_ji22_team1_app.telegram_api;
 
-import static pro.sky.animal_shelter_ji22_team1_app.ClientService.ClientType.NEW_CLIENT;
-
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pro.sky.animal_shelter_ji22_team1_app.ClientService.AutowiredService;
-import pro.sky.animal_shelter_ji22_team1_app.ClientService.ClientService;
-import pro.sky.animal_shelter_ji22_team1_app.ClientService.ClientType;
+import pro.sky.animal_shelter_ji22_team1_app.menu_service.AutoInjectMenuServiceByType;
+import pro.sky.animal_shelter_ji22_team1_app.menu_service.MenuService;
 
-import pro.sky.animal_shelter_ji22_team1_app.ClientService.NewClientService;
+import pro.sky.animal_shelter_ji22_team1_app.entity.Type;
 import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
 
 import pro.sky.animal_shelter_ji22_team1_app.service.UserService;
@@ -22,28 +19,32 @@ import java.util.Map;
 public class UserEvaluator {
     private final UserService userService;
     @Autowired
-    private List<ClientService> clientServices;
+    private List<MenuService> clientServices;
 
-    private Map<ClientType, ClientService> serviceMap = new HashMap<>();
+    private Map<Type, MenuService> serviceMap = new HashMap<>();
 
     public UserEvaluator(UserService userService) {
         this.userService = userService;
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         clientServices.forEach(service -> {
             serviceMap.put(service.getClass()
-                    .getAnnotation(AutowiredService.class).type(), service);
+                    .getAnnotation(AutoInjectMenuServiceByType.class).type(), service);
         });
     }
 
 
-    public ClientService evaluate(Integer chatId){
-        UserEntity user  =  userService.findByChatId(chatId);
-        ClientService type = new NewClientService();
-//        String type = user.getType();
-        return serviceMap.put(NEW_CLIENT, type);
+    public MenuService evaluate(Integer chatId) {
+        UserEntity user = userService.findByChatId(chatId);
+        Type type;
+        if (user == null) {
+           type=Type.NEW_CLIENT;
+        } else {
+            type = user.getType();
+        }
+        return serviceMap.get(type);
     }
 
 }
