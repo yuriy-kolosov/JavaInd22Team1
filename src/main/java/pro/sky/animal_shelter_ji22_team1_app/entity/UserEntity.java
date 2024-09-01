@@ -32,8 +32,8 @@ public class UserEntity {
     @Column(name = "chat_id")
     private Integer chatId;
 
-    @Column
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
     public Long getId() {
         return id;
@@ -107,11 +107,11 @@ public class UserEntity {
         chatId = chatId;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
     }
 

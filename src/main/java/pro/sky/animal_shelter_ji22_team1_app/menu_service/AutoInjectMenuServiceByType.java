@@ -1,4 +1,6 @@
-package pro.sky.animal_shelter_ji22_team1_app.ClientService;
+package pro.sky.animal_shelter_ji22_team1_app.menu_service;
+
+import pro.sky.animal_shelter_ji22_team1_app.entity.Type;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AutowiredService {
-    ClientType type();
+public @interface AutoInjectMenuServiceByType {
+    Type type();
 }
