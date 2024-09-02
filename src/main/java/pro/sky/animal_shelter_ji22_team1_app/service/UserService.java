@@ -15,5 +15,5 @@ public interface UserService {
 
     void delete(Long userId);
 
-    UserEntity findByChatId(Integer chatId);
+    UserEntity findByChatId(Long chatId);
 }
