@@ -17,3 +17,6 @@ databaseChangeLog:
   - include:
       file:
         - liquibase/scripts/change_data_type_animals_age.sql
+  - include:
+      file:
+        - liquibase/scripts/change_data_type_users_chat_id.sql
