@@ -36,7 +36,7 @@ public class UserEvaluator {
     }
 
 
-    public MenuService evaluate(Integer chatId) {
+    public MenuService evaluate(Long chatId) {
         UserEntity user = userService.findByChatId(chatId);
         Type type;
         if (user == null) {

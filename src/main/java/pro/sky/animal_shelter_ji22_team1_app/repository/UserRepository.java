@@ -9,5 +9,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     List<UserEntity> findByLogin(String login);
     List<UserEntity> findByPhone(String phone);
 
-    UserEntity findByChatId(Integer chatId);
+    UserEntity findByChatId(Long chatId);
 }
