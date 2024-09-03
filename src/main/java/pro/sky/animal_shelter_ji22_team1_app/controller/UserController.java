@@ -36,7 +36,7 @@ public class UserController {
                             )
                     )
             },
-            tags = "Users"
+            tags = "users"
     )
     @GetMapping
     public ResponseEntity<Collection<UserEntity>> getAllUsers() {
@@ -64,7 +64,7 @@ public class UserController {
                             )
                     )
             },
-            tags = "User"
+            tags = "users"
     )
     @GetMapping("/{userId}")
     public ResponseEntity<UserEntity> getUser(@PathVariable Long userId) {
@@ -81,7 +81,7 @@ public class UserController {
                             schema = @Schema(implementation = UserEntity.class)
                     )
             ),
-            tags = "Users"
+            tags = "users"
     )
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody UserEntity user) {
@@ -98,7 +98,7 @@ public class UserController {
                             schema = @Schema(implementation = UserEntity.class)
                     )
             ),
-            tags = "Users"
+            tags = "users"
     )
     @PutMapping()
     public ResponseEntity<UserEntity> changeUser(@RequestBody UserEntity user) {
@@ -127,7 +127,7 @@ public class UserController {
                             )
                     )
             },
-            tags = "Users"
+            tags = "users"
     )
     @DeleteMapping("/{userId}")
     public ResponseEntity<Long> deleteUser(@PathVariable Long userId) {
