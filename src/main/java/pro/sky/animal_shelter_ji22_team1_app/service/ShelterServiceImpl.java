@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pro.sky.animal_shelter_ji22_team1_app.entity.ShelterEntity;
 import pro.sky.animal_shelter_ji22_team1_app.exception.ShelterDoesNotExistException;
 import pro.sky.animal_shelter_ji22_team1_app.repository.ShelterRepository;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -82,6 +83,11 @@ public class ShelterServiceImpl implements ShelterService {
         if (findShelterById(shelter.getId()) == null) {
             throw new ShelterDoesNotExistException("Приют номер %d в базе данных отсутствует"
                     .formatted(shelter.getId()));
+        }
+        byte[] schemeFile = findShelterById(shelter.getId()).getLocationSchemeData();
+        if (schemeFile != null) {
+            shelter.setMediaType(findShelterById(shelter.getId()).getMediaType());
+            shelter.setLocationSchemeData(schemeFile);
         }
         shelterRepository.save(shelter);
         return findShelterById(shelter.getId());
