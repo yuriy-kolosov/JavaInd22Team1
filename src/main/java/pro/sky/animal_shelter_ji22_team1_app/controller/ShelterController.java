@@ -51,16 +51,6 @@ public class ShelterController {
             },
             tags = "shelters"
     )
-//    @ApiResponses({
-//            @ApiResponse(
-//                    responseCode = "200",
-//                    description = "Вывод информации о всех приютах из базы данных",
-//                    content = @Content(
-//                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-//                            schema = @Schema(implementation = ShelterEntity[].class)
-//                    )
-//            )
-//    })
     @GetMapping
     public ResponseEntity<Collection<ShelterEntity>> getAllShelters() {
 
@@ -82,7 +72,7 @@ public class ShelterController {
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "404",
+                            responseCode = "400",
                             description = "Приют не найден",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
@@ -92,16 +82,6 @@ public class ShelterController {
             },
             tags = "shelters"
     )
-//    @ApiResponses({
-//            @ApiResponse(
-//                    responseCode = "200",
-//                    description = "Вывод информации о приюте с указанным номером (id) из базы данных",
-//                    content = @Content(
-//                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-//                            schema = @Schema(implementation = ShelterEntity.class)
-//                    )
-//            )
-//    })
     @GetMapping("/{shelterId}")
     public ResponseEntity<ShelterEntity> getShelter(@PathVariable Long shelterId) {
 
@@ -124,7 +104,7 @@ public class ShelterController {
                     ),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Адрес приюта (схема проезда) не найден",
+                            description = "Адрес приюта (схема приезда) не найдена",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ErrorDto.class)
@@ -133,26 +113,21 @@ public class ShelterController {
             },
             tags = "shelters"
     )
-//    @ApiResponses({
-//            @ApiResponse(
-//                    responseCode = "200",
-//                    description = "Вывод информации о приюте из базы данных: адрес (схема проезда)"
-//            ),
-//            @ApiResponse(
-//                    responseCode = "400",
-//                    description = "Адрес приюта (схема проезда) в базе данных отсутствует"
-//            )
-//    })
     @GetMapping("/scheme{shelterId}")
     public ResponseEntity<byte[]> getShelterLocationScheme(@PathVariable Long shelterId) {
 
         logger.debug("\"Get\" getShelterLocationScheme method was invoke...");
 
         ShelterEntity shelter = shelterService.findShelterById(shelterId);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(shelter.getMediaType()));
-        headers.setContentLength(shelter.getLocationSchemeData().length);
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(shelter.getLocationSchemeData());
+
+        byte[] schemeFile = shelter.getLocationSchemeData();
+        if (schemeFile != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType(shelter.getMediaType()));
+            headers.setContentLength(schemeFile.length);
+            return ResponseEntity.status(HttpStatus.OK).headers(headers).body(shelter.getLocationSchemeData());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Operation(
@@ -169,12 +144,6 @@ public class ShelterController {
             },
             tags = "shelters"
     )
-//    @ApiResponses({
-//            @ApiResponse(
-//                    responseCode = "200",
-//                    description = "Запись информации о новом приюте в базу данных (без схемы проезда)"
-//            )
-//    })
     @PostMapping
     public ResponseEntity<ShelterEntity> createShelter(@RequestBody ShelterEntity shelter) {
 
@@ -206,16 +175,6 @@ public class ShelterController {
             },
             tags = "shelters"
     )
-//    @ApiResponses({
-//            @ApiResponse(
-//                    responseCode = "200",
-//                    description = "Изменение информации о приюте с указанным номером (id) в базе данных (без схемы проезда)",
-//                    content = @Content(
-//                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-//                            schema = @Schema(implementation = ShelterEntity.class)
-//                    )
-//            )
-//    })
     @PutMapping
     public ResponseEntity<ShelterEntity> updateShelter(@RequestBody ShelterEntity shelter) {
 
@@ -248,12 +207,6 @@ public class ShelterController {
             },
             tags = "shelters"
     )
-//    @ApiResponses({
-//            @ApiResponse(
-//                    responseCode = "200",
-//                    description = "Добавление/изменение информации в базе данных приюта: адрес (схема проезда)"
-//            )
-//    })
     @PutMapping(value = "/location{shelterId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ShelterEntity> addShelterLocationScheme(@PathVariable Long shelterId
             , @RequestParam MultipartFile shelterLocationSchemeFile) throws IOException {
@@ -277,7 +230,7 @@ public class ShelterController {
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "404",
+                            responseCode = "400",
                             description = "Приют не найден",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
@@ -287,12 +240,6 @@ public class ShelterController {
             },
             tags = "shelters"
     )
-//    @ApiResponses({
-//            @ApiResponse(
-//                    responseCode = "200",
-//                    description = "Удаление всей информации о приюте с указанным номером (id) в базе данных"
-//            )
-//    })
     @DeleteMapping("/{shelterId}")
     public ResponseEntity<Long> deleteShelter(@PathVariable Long shelterId) {
 
