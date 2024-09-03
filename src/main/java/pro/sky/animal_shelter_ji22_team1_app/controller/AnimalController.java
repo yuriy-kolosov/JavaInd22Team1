@@ -43,7 +43,7 @@ public class AnimalController {
                             )
                     )
             },
-            tags = "Animals"
+            tags = "animals"
     )
     @GetMapping
     public ResponseEntity<Collection<Animal>> getAllAnimals() {
@@ -71,7 +71,7 @@ public class AnimalController {
                             )
                     )
             },
-            tags = "Animals"
+            tags = "animals"
     )
     @GetMapping("/{animalId}")
     public ResponseEntity<Animal> getAnimal(@PathVariable Long animalId) {
@@ -88,7 +88,7 @@ public class AnimalController {
                             schema = @Schema(implementation = Animal.class)
                     )
             ),
-            tags = "Animals"
+            tags = "animals"
     )
     @PostMapping
     public ResponseEntity<Void> createAnimal(@RequestBody Animal animal) {
@@ -105,7 +105,7 @@ public class AnimalController {
                             schema = @Schema(implementation = Animal.class)
                     )
             ),
-            tags = "Animals"
+            tags = "animals"
     )
     @PutMapping()
     public ResponseEntity<Animal> changeAnimal(@RequestBody Animal animal) {
@@ -134,7 +134,7 @@ public class AnimalController {
                             )
                     )
             },
-            tags = "Animals"
+            tags = "animals"
     )
     @DeleteMapping("/{animalId}")
     public ResponseEntity<Long> deleteAnimal(@PathVariable Long animalId) {
