@@ -1,5 +1,6 @@
 package pro.sky.animal_shelter_ji22_team1_app.service;
 
+import com.pengrad.telegrambot.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,7 +19,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -83,6 +85,15 @@ class UserServiceImplTest {
     }
 
     @Test
+    public void changeUser() {
+        UserEntity user = createTestUser();
+
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+
+        assertEquals(user, userService.change(user));
+    }
+
+    @Test
     public void changeUserWithDoesNotExistId() {
         UserEntity user = createTestUser();
 
@@ -117,10 +128,10 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void deleteUserDoesNotExist(){
+    public void deleteUserDoesNotExist() {
         when(userRepository.findById(anyLong())).thenThrow(UserDoesNotExistException.class);
 
-        assertThrows(UserDoesNotExistException.class, ()->userService.delete(1L),
+        assertThrows(UserDoesNotExistException.class, () -> userService.delete(1L),
                 "Пользователя с id = 1 не существует");
     }
 
