@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
             throw new UserWithThisLoginAlreadyExistException("Пользователь с логином %s уже существует"
                     .formatted(user.getLogin()));
         }
-        if (userRepository.findByPhone(user.getPhone()).isEmpty()) {
+        if (!userRepository.findByPhone(user.getPhone()).isEmpty()) {
             throw new UserWithThisPhoneAlreadyExistException("Пользователь с номером телефона %s уже существует"
                     .formatted(user.getPhone()));
         }
