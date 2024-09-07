@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.Collection;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -73,9 +72,9 @@ public class AnimalController {
             },
             tags = "animals"
     )
-    @GetMapping("/{animalId}")
-    public ResponseEntity<Animal> getAnimal(@PathVariable Long animalId) {
-        Animal animal = animalService.findById(animalId);
+    @GetMapping("/{id}")
+    public ResponseEntity<Animal> getAnimal(@PathVariable Long id) {
+        Animal animal = animalService.findById(id);
         return ResponseEntity.ok(animal);
     }
 
@@ -91,9 +90,8 @@ public class AnimalController {
             tags = "animals"
     )
     @PostMapping
-    public ResponseEntity<Void> createAnimal(@RequestBody Animal animal) {
-        animalService.save(animal);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public Animal createAnimal(@RequestBody Animal animal) {
+        return animalService.save(animal);
     }
 
     @Operation(
@@ -136,9 +134,9 @@ public class AnimalController {
             },
             tags = "animals"
     )
-    @DeleteMapping("/{animalId}")
-    public ResponseEntity<Long> deleteAnimal(@PathVariable Long animalId) {
-        animalService.delete(animalId);
-        return ResponseEntity.ok(animalId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Long> deleteAnimal(@PathVariable Long id) {
+        animalService.delete(id);
+        return ResponseEntity.ok(id);
     }
 }
