@@ -41,7 +41,8 @@ class UserServiceImplTest {
     public void shouldFindByUserIdUserDoesNotExist() {
         when(userRepository.findById(anyLong())).thenThrow(UserDoesNotExistException.class);
 
-        assertThrows(UserDoesNotExistException.class, () -> userService.findById(1L));
+        assertThrows(UserDoesNotExistException.class, () -> userService.findById(1L),
+                "Пользователя с id = 1 не существует");
     }
 
     @Test
@@ -67,7 +68,8 @@ class UserServiceImplTest {
 
         when(userRepository.findByLogin(user.getLogin())).thenThrow(UserWithThisLoginAlreadyExistException.class);
 
-        assertThrows(UserWithThisLoginAlreadyExistException.class, () -> userService.save(user));
+        assertThrows(UserWithThisLoginAlreadyExistException.class, () -> userService.save(user),
+                "Пользователь с логином %s уже существует".formatted(user.getLogin()));
     }
 
     @Test
@@ -76,7 +78,8 @@ class UserServiceImplTest {
 
         when(userRepository.findByPhone(user.getPhone())).thenThrow(UserWithThisPhoneAlreadyExistException.class);
 
-        assertThrows(UserWithThisPhoneAlreadyExistException.class, () -> userService.save(user));
+        assertThrows(UserWithThisPhoneAlreadyExistException.class, () -> userService.save(user),
+                "Пользователь с номером телефона %s уже существует".formatted(user.getPhone()));
     }
 
     @Test
@@ -85,7 +88,8 @@ class UserServiceImplTest {
 
         when(userRepository.findById(user.getId())).thenThrow(UserDoesNotExistException.class);
 
-        assertThrows(UserDoesNotExistException.class, () -> userService.change(user));
+        assertThrows(UserDoesNotExistException.class, () -> userService.change(user),
+                "Пользователя с id = %d не существует".formatted(user.getId()));
     }
 
     @Test
@@ -96,7 +100,8 @@ class UserServiceImplTest {
 
         when(userRepository.findByLogin(user.getLogin())).thenThrow(UserWithThisLoginAlreadyExistException.class);
 
-        assertThrows(UserWithThisLoginAlreadyExistException.class, () -> userService.change(user));
+        assertThrows(UserWithThisLoginAlreadyExistException.class, () -> userService.change(user),
+                "Пользователь с логином %s уже существует".formatted(user.getLogin()));
     }
 
     @Test
@@ -107,14 +112,16 @@ class UserServiceImplTest {
 
         when(userRepository.findByPhone(user.getPhone())).thenThrow(UserWithThisPhoneAlreadyExistException.class);
 
-        assertThrows(UserWithThisPhoneAlreadyExistException.class, () -> userService.change(user));
+        assertThrows(UserWithThisPhoneAlreadyExistException.class, () -> userService.change(user),
+                "Пользователь с номером телефона %s уже существует".formatted(user.getPhone()));
     }
 
     @Test
     public void deleteUserDoesNotExist(){
         when(userRepository.findById(anyLong())).thenThrow(UserDoesNotExistException.class);
 
-        assertThrows(UserDoesNotExistException.class, ()->userService.delete(1L));
+        assertThrows(UserDoesNotExistException.class, ()->userService.delete(1L),
+                "Пользователя с id = 1 не существует");
     }
 
     private UserEntity createTestUser() {
