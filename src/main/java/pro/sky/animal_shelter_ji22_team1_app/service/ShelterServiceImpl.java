@@ -55,19 +55,11 @@ public class ShelterServiceImpl implements ShelterService {
      * Используется метод репозитория {@link JpaRepository#save(Object)}
      *
      * @param shelter содержит информацию о приюте
-     * @return информация о новом приюте
      */
     @Override
-    public ShelterEntity saveShelter(ShelterEntity shelter) {
-        if (shelterRepository.findById(shelter.getId()).isPresent()) {
-            throw new RuntimeException("Приют номер %s уже присутствует в базе данных"
-                    .formatted(shelter.getId()));
-        } else {
-            shelter.setId(null);
-
-            shelterRepository.save(shelter);
-        }
-        return findShelterById(shelter.getId());
+    public void saveShelter(ShelterEntity shelter) {
+        shelter.setId(null);
+        shelterRepository.save(shelter);
     }
 
     /**
@@ -80,17 +72,17 @@ public class ShelterServiceImpl implements ShelterService {
      */
     @Override
     public ShelterEntity changeShelter(ShelterEntity shelter) {
-        if (findShelterById(shelter.getId()) == null) {
-            throw new ShelterDoesNotExistException("Приют номер %d в базе данных отсутствует"
-                    .formatted(shelter.getId()));
-        }
-        byte[] schemeFile = findShelterById(shelter.getId()).getLocationSchemeData();
+        ShelterEntity shelterCurrent = shelterRepository.findById(shelter.getId())
+                .orElseThrow(() -> new ShelterDoesNotExistException("Приют номер %d в базе данных отсутствует"
+                        .formatted(shelter.getId())));
+        byte[] schemeFile = shelterCurrent.getLocationSchemeData();
         if (schemeFile != null) {
-            shelter.setMediaType(findShelterById(shelter.getId()).getMediaType());
+            shelter.setMediaType(shelterCurrent.getMediaType());
             shelter.setLocationSchemeData(schemeFile);
         }
         shelterRepository.save(shelter);
-        return findShelterById(shelter.getId());
+        shelter.setId(shelterCurrent.getId());
+        return shelter;
     }
 
     /**
