@@ -8,7 +8,7 @@ public interface AnimalService {
 
     Animal findById(Long animalId);
 
-    void save(Animal animal);
+    Animal save(Animal animal);
 
     Animal change(Animal animal);
 
