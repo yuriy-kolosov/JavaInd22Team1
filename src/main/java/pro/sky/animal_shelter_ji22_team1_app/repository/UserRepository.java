@@ -8,6 +8,5 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     List<UserEntity> findByLogin(String login);
     List<UserEntity> findByPhone(String phone);
-
     UserEntity findByChatId(Long chatId);
 }

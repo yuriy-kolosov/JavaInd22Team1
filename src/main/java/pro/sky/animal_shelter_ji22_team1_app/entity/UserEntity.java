@@ -16,7 +16,7 @@ public class UserEntity {
     private String firstname;
 
     @Column(name = "s_name")
-    private String secondname;
+    private String surname;
 
     @Column(name = "l_name")
     private String lastname;
@@ -51,12 +51,12 @@ public class UserEntity {
         this.firstname = firstname;
     }
 
-    public String getSecondname() {
-        return secondname;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setSecondname(String secondname) {
-        this.secondname = secondname;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getLastname() {
@@ -104,7 +104,7 @@ public class UserEntity {
     }
 
     public void setChatId(Long chatId) {
-        chatId = chatId;
+        this.chatId = chatId;
     }
 
     public Type getType() {
@@ -120,11 +120,11 @@ public class UserEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(firstname, that.firstname) && Objects.equals(secondname, that.secondname) && Objects.equals(lastname, that.lastname) && Objects.equals(login, that.login);
+        return Objects.equals(id, that.id) && Objects.equals(firstname, that.firstname) && Objects.equals(surname, that.surname) && Objects.equals(lastname, that.lastname) && Objects.equals(login, that.login);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, secondname, lastname, login);
+        return Objects.hash(id, firstname, surname, lastname, login);
     }
 }

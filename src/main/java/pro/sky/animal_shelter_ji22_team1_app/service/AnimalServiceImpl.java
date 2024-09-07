@@ -41,8 +41,8 @@ public class AnimalServiceImpl implements AnimalService {
      *
      * @param animal
      */
-    @Override public void save(Animal animal) {
-        animalRepository.save(animal);
+    @Override public Animal save(Animal animal) {
+        return animalRepository.save(animal);
     }
 
     /**

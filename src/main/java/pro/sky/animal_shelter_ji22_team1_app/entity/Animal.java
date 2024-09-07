@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Класс, определяющий структуру таблицы animals
@@ -27,6 +28,18 @@ public class Animal {
     private LocalDateTime regDate;
 
     private String comment;
+
+    public Animal() {
+    }
+
+    public Animal(Long id, String name, Integer age, String breed, LocalDateTime regDate, String comment) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.breed = breed;
+        this.regDate = regDate;
+        this.comment = comment;
+    }
 
     public Long getId() {
         return id;
@@ -60,8 +73,8 @@ public class Animal {
         this.breed = breed;
     }
 
-    public LocalDateTime getRegDate() {
-        return regDate;
+    public String getRegDate() {
+        return regDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     public void setRegDate(LocalDateTime regDate) {

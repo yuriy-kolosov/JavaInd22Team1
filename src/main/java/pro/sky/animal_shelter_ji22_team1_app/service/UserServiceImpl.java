@@ -44,11 +44,11 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     public void save(UserEntity user) {
-        if (userRepository.findByLogin(user.getLogin()) != null) {
+        if (!userRepository.findByLogin(user.getLogin()).isEmpty()) {
             throw new UserWithThisLoginAlreadyExistException("Пользователь с логином %s уже существует"
                     .formatted(user.getLogin()));
         }
-        if (userRepository.findByPhone(user.getPhone()) != null) {
+        if (!userRepository.findByPhone(user.getPhone()).isEmpty()) {
             throw new UserWithThisPhoneAlreadyExistException("Пользователь с номером телефона %s уже существует"
                     .formatted(user.getPhone()));
         }
