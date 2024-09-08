@@ -102,8 +102,7 @@ public class UserController {
     )
     @PutMapping()
     public ResponseEntity<UserEntity> changeUser(@RequestBody UserEntity user) {
-        UserEntity
-                changedUser = userService.change(user);
+        UserEntity changedUser = userService.change(user);
         return ResponseEntity.ok(changedUser);
     }
 
