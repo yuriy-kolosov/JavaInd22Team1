@@ -1,12 +1,12 @@
-package pro.sky.animal_shelter_ji22_team1_app.service;
+package pro.sky.animal_shelter_ji22_team1_app.constants;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import pro.sky.animal_shelter_ji22_team1_app.entity.Animal;
+import pro.sky.animal_shelter_ji22_team1_app.entity.AnimalEntity;
 
-public class ConstantsForTests {
-    public static final Animal BOBIK = new Animal(
+public class AnimalServiceImplTestConstants {
+    public static final AnimalEntity BOBIK = new AnimalEntity(
             1L,
             "Bobik",
             1,
@@ -15,7 +15,7 @@ public class ConstantsForTests {
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
             "Верный пёс"
     );
-    public static final Animal MURKA = new Animal(
+    public static final AnimalEntity MURKA = new AnimalEntity(
             2L,
             "Murka",
             2,
@@ -23,7 +23,7 @@ public class ConstantsForTests {
             LocalDateTime.parse("2024-06-08 12:30:00",
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
             "Та ещё вредина");
-    public static final Animal SHARIK = new Animal(
+    public static final AnimalEntity SHARIK = new AnimalEntity(
             3L,
             "Sharik",
             0,
@@ -33,7 +33,7 @@ public class ConstantsForTests {
             "Цирковой");
 
 
-    public static final List<Animal> ANIMALS = List.of(BOBIK, MURKA, SHARIK);
+    public static final List<AnimalEntity> ANIMALS = List.of(BOBIK, MURKA, SHARIK);
 
 
 }

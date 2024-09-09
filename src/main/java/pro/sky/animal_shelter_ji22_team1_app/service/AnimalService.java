@@ -1,16 +1,16 @@
 package pro.sky.animal_shelter_ji22_team1_app.service;
 
 import java.util.Collection;
-import pro.sky.animal_shelter_ji22_team1_app.entity.Animal;
+import pro.sky.animal_shelter_ji22_team1_app.entity.AnimalEntity;
 
 public interface AnimalService {
-    Collection<Animal> findAll();
+    Collection<AnimalEntity> findAll();
 
-    Animal findById(Long animalId);
+    AnimalEntity findById(Long animalId);
 
-    Animal save(Animal animal);
+    AnimalEntity save(AnimalEntity animal);
 
-    Animal change(Animal animal);
+    AnimalEntity change(AnimalEntity animal);
 
-    Animal delete(Long animalId);
+    AnimalEntity delete(Long animalId);
 }
