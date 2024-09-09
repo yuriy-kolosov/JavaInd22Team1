@@ -5,10 +5,10 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static pro.sky.animal_shelter_ji22_team1_app.service.ConstantsForTests.ANIMALS;
-import static pro.sky.animal_shelter_ji22_team1_app.service.ConstantsForTests.BOBIK;
-import static pro.sky.animal_shelter_ji22_team1_app.service.ConstantsForTests.MURKA;
-import static pro.sky.animal_shelter_ji22_team1_app.service.ConstantsForTests.SHARIK;
+import static pro.sky.animal_shelter_ji22_team1_app.constants.AnimalServiceImplTestConstants.ANIMALS;
+import static pro.sky.animal_shelter_ji22_team1_app.constants.AnimalServiceImplTestConstants.BOBIK;
+import static pro.sky.animal_shelter_ji22_team1_app.constants.AnimalServiceImplTestConstants.MURKA;
+import static pro.sky.animal_shelter_ji22_team1_app.constants.AnimalServiceImplTestConstants.SHARIK;
 
 import java.util.Optional;
 import org.json.JSONException;
@@ -24,7 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import pro.sky.animal_shelter_ji22_team1_app.controller.AnimalController;
-import pro.sky.animal_shelter_ji22_team1_app.entity.Animal;
+import pro.sky.animal_shelter_ji22_team1_app.entity.AnimalEntity;
 import pro.sky.animal_shelter_ji22_team1_app.repository.AnimalRepository;
 
 @WebMvcTest(AnimalController.class)
@@ -77,7 +77,7 @@ class AnimalServiceImplTest {
 
     @Test
     void findById() throws Exception {
-        Animal expected = BOBIK;
+        AnimalEntity expected = BOBIK;
         when(animalRepository.findById(any(Long.class))).thenReturn(Optional.of(expected));
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -98,10 +98,10 @@ class AnimalServiceImplTest {
 
     @Test
     void save() throws Exception {
-        Animal expected = MURKA;
+        AnimalEntity expected = MURKA;
         String jsonAnimal = getJsonObjectAnimal(expected);
 
-        when(animalRepository.save(any(Animal.class))).thenReturn(expected);
+        when(animalRepository.save(any(AnimalEntity.class))).thenReturn(expected);
         when(animalRepository.findById(any(Long.class))).thenReturn(Optional.of(expected));
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -131,7 +131,7 @@ class AnimalServiceImplTest {
                .andExpect(jsonPath("$.comment").value(expected.getComment()));
     }
 
-    private String getJsonObjectAnimal(Animal animal) throws JSONException {
+    private String getJsonObjectAnimal(AnimalEntity animal) throws JSONException {
         JSONObject jsonAnimal = new JSONObject();
         jsonAnimal.put("id", animal.getId());
         jsonAnimal.put("name", animal.getName());
@@ -145,11 +145,11 @@ class AnimalServiceImplTest {
 
     @Test
     void change() throws Exception {
-        Animal expected = SHARIK;
+        AnimalEntity expected = SHARIK;
         String jsonAnimal = getJsonObjectAnimal(expected);
 
         when(animalRepository.findById(3L)).thenReturn(Optional.of(expected));
-        when(animalRepository.save(any(Animal.class))).thenReturn(expected);
+        when(animalRepository.save(any(AnimalEntity.class))).thenReturn(expected);
 
         mockMvc.perform(MockMvcRequestBuilders
                                 .put(url)
@@ -168,7 +168,7 @@ class AnimalServiceImplTest {
     @Test
     void delete() throws Exception {
         when(animalRepository.findById(3L)).thenReturn(Optional.of(SHARIK));
-        doNothing().when(animalRepository).delete(any(Animal.class));
+        doNothing().when(animalRepository).delete(any(AnimalEntity.class));
 
         mockMvc.perform(MockMvcRequestBuilders
                                 .delete(url + "/3")

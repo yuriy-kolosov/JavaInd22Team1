@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
  */
 @Entity
 @Table(name = "animals")
-public class Animal {
+public class AnimalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,10 +29,10 @@ public class Animal {
 
     private String comment;
 
-    public Animal() {
+    public AnimalEntity() {
     }
 
-    public Animal(Long id, String name, Integer age, String breed, LocalDateTime regDate, String comment) {
+    public AnimalEntity(Long id, String name, Integer age, String breed, LocalDateTime regDate, String comment) {
         this.id = id;
         this.name = name;
         this.age = age;

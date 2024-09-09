@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pro.sky.animal_shelter_ji22_team1_app.entity.Animal;
+import pro.sky.animal_shelter_ji22_team1_app.entity.AnimalEntity;
 import pro.sky.animal_shelter_ji22_team1_app.exception.ErrorDto;
 import pro.sky.animal_shelter_ji22_team1_app.service.AnimalService;
 import pro.sky.animal_shelter_ji22_team1_app.service.AnimalServiceImpl;
@@ -38,15 +38,15 @@ public class AnimalController {
                             description = "Найденные животные",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Animal.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = AnimalEntity.class))
                             )
                     )
             },
             tags = "animals"
     )
     @GetMapping
-    public ResponseEntity<Collection<Animal>> getAllAnimals() {
-        Collection<Animal> animals = animalService.findAll();
+    public ResponseEntity<Collection<AnimalEntity>> getAllAnimals() {
+        Collection<AnimalEntity> animals = animalService.findAll();
         return ResponseEntity.ok(animals);
     }
 
@@ -58,7 +58,7 @@ public class AnimalController {
                             description = "Найденное животное",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Animal.class)
+                                    schema = @Schema(implementation = AnimalEntity.class)
                             )
                     ),
                     @ApiResponse(
@@ -73,8 +73,8 @@ public class AnimalController {
             tags = "animals"
     )
     @GetMapping("/{id}")
-    public ResponseEntity<Animal> getAnimal(@PathVariable Long id) {
-        Animal animal = animalService.findById(id);
+    public ResponseEntity<AnimalEntity> getAnimal(@PathVariable Long id) {
+        AnimalEntity animal = animalService.findById(id);
         return ResponseEntity.ok(animal);
     }
 
@@ -84,13 +84,13 @@ public class AnimalController {
                     description = "Создаваемое животное",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = Animal.class)
+                            schema = @Schema(implementation = AnimalEntity.class)
                     )
             ),
             tags = "animals"
     )
     @PostMapping
-    public Animal createAnimal(@RequestBody Animal animal) {
+    public AnimalEntity createAnimal(@RequestBody AnimalEntity animal) {
         return animalService.save(animal);
     }
 
@@ -100,14 +100,14 @@ public class AnimalController {
                     description = "Редактируемое животное",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = Animal.class)
+                            schema = @Schema(implementation = AnimalEntity.class)
                     )
             ),
             tags = "animals"
     )
     @PutMapping()
-    public ResponseEntity<Animal> changeAnimal(@RequestBody Animal animal) {
-        Animal
+    public ResponseEntity<AnimalEntity> changeAnimal(@RequestBody AnimalEntity animal) {
+        AnimalEntity
                 changedAnimal = animalService.change(animal);
         return ResponseEntity.ok(changedAnimal);
     }
