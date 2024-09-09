@@ -18,15 +18,23 @@ public class RemoteControl {
         return commands.get("helpCommand").execute();
     }
 
-    public String  shelter() {
-        return commands.get("shelterCommand").execute();
+    public String address() {
+        return commands.get("addressCommand").execute();
     }
 
-    public String  choosingAnimal() {
-        return commands.get("choosingAnimalCommand").execute();
+    public String entry() {
+        return commands.get("entryCommand").execute();
     }
 
-    public String sendReport() {
-        return commands.get("sendReportCommand").execute();
+    public String pets() {
+        return commands.get("petsCommand").execute();
+    }
+
+    public String rules() {
+        return commands.get("rulesCommand").execute();
+    }
+
+    public String dailyReportForm() {
+        return commands.get("dailyReportFormCommand").execute();
     }
 }
