@@ -26,3 +26,10 @@ databaseChangeLog:
   - include:
       file:
         - liquibase/scripts/drop_not_null_of_phone_names_at_user.sql
+  - include:
+      file:
+        - liquibase/scripts/change_data_type_volunteers_phone.sql
+  - include:
+      file:
+        - liquibase/scripts/add_chat_id_at_volunteer.sql
+
