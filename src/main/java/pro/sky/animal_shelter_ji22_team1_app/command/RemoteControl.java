@@ -18,8 +18,8 @@ public class RemoteControl {
         return commands.get("helpCommand").execute();
     }
 
-    public String address() {
-        return commands.get("addressCommand").execute();
+    public String shelterInfo() {
+        return commands.get("shelterInfoCommand").execute();
     }
 
     public String entry() {
@@ -36,5 +36,17 @@ public class RemoteControl {
 
     public String dailyReportForm() {
         return commands.get("dailyReportFormCommand").execute();
+    }
+    public String location(){
+        return commands.get("locationCommand").execute();
+    }
+    public String shelterContacts(){
+        return commands.get("shelterContactsCommand").execute();
+    }
+    public String heathAndSafety(){
+        return commands.get("healthAndSafetyCommand").execute();
+    }
+    public String clientContacts(){
+        return commands.get("clientContactsCommand").execute();
     }
 }

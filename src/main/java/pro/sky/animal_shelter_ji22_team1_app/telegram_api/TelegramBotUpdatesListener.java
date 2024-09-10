@@ -49,7 +49,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 case "/help" -> sendMessage(chatId, remoteControl.help());
 //                                                                                                      ...
 //                                                                                          Menu Command from Point#1
-                case "/address" -> sendMessage(chatId, remoteControl.address());
+                case "/shelter_info" -> sendMessage(chatId, remoteControl.shelterInfo());
 //                                                                                                      ...
 //                                                                                          Menu Command from Point#2
                 case "/entry" -> sendMessage(chatId, remoteControl.entry());
@@ -59,6 +59,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 //                                                                                          Menu Command from Point#3
                 case "/dailyreportform" -> sendMessage(chatId, remoteControl.dailyReportForm());
 //                                                                                      ...
+                case "/location" -> sendMessage(chatId,remoteControl.location());
+
+                case "/shelter_contacts"->sendMessage(chatId,remoteControl.shelterContacts());
+
+                case "/health_and_safety"->sendMessage(chatId,remoteControl.heathAndSafety());
+
+                case "/client_contacts"-> sendMessage(chatId,remoteControl.clientContacts());
 //                                                                                          No such command
                 default -> sendMessage(chatId, "такой команды не существует. Вы можете вызвать справку" +
                                                " командой /help");
