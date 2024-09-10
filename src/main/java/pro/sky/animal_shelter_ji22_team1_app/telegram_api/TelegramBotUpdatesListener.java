@@ -44,10 +44,24 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             Long chatId = update.message().chat().id();
 
             switch (update.message().text()) {
+//                                                                                          Menu Command from Point#0
                 case "/start" -> sendMessage(chatId, remoteControl.start());
                 case "/help" -> sendMessage(chatId, remoteControl.help());
+//                                                                                                      ...
+//                                                                                          Menu Command from Point#1
+                case "/address" -> sendMessage(chatId, remoteControl.address());
+//                                                                                                      ...
+//                                                                                          Menu Command from Point#2
+                case "/entry" -> sendMessage(chatId, remoteControl.entry());
+                case "/pets" -> sendMessage(chatId, remoteControl.pets());
+                case "/rules" -> sendMessage(chatId, remoteControl.rules());
+//                                                                                                      ...
+//                                                                                          Menu Command from Point#3
+                case "/dailyreportform" -> sendMessage(chatId, remoteControl.dailyReportForm());
+//                                                                                      ...
+//                                                                                          No such command
                 default -> sendMessage(chatId, "такой команды не существует. Вы можете вызвать справку" +
-                                               "командой /help");
+                                               " командой /help");
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;

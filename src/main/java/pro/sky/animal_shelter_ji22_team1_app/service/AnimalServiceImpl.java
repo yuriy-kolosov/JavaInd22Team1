@@ -2,7 +2,7 @@ package pro.sky.animal_shelter_ji22_team1_app.service;
 
 import java.util.Collection;
 import org.springframework.stereotype.Service;
-import pro.sky.animal_shelter_ji22_team1_app.entity.Animal;
+import pro.sky.animal_shelter_ji22_team1_app.entity.AnimalEntity;
 import pro.sky.animal_shelter_ji22_team1_app.exception.AnimalDoesNotExistException;
 import pro.sky.animal_shelter_ji22_team1_app.repository.AnimalRepository;
 
@@ -20,7 +20,7 @@ public class AnimalServiceImpl implements AnimalService {
      *
      * @return animals
      */
-    @Override public Collection<Animal> findAll() {
+    @Override public Collection<AnimalEntity> findAll() {
         return animalRepository.findAll();
     }
 
@@ -31,7 +31,7 @@ public class AnimalServiceImpl implements AnimalService {
      * @return найденное животное
      * @throws AnimalDoesNotExistException если животное с указанным идентификатором не было найдено
      */
-    @Override public Animal findById(Long id) {
+    @Override public AnimalEntity findById(Long id) {
         return animalRepository.findById(id)
                                .orElseThrow(() -> new AnimalDoesNotExistException("Животного с id = %d не существует".formatted(id)));
     }
@@ -41,7 +41,7 @@ public class AnimalServiceImpl implements AnimalService {
      *
      * @param animal
      */
-    @Override public Animal save(Animal animal) {
+    @Override public AnimalEntity save(AnimalEntity animal) {
         return animalRepository.save(animal);
     }
 
@@ -51,7 +51,7 @@ public class AnimalServiceImpl implements AnimalService {
      * @param animal
      * @throws AnimalDoesNotExistException если клиента с таким идентификатором существует
      */
-    @Override public Animal change(Animal animal) {
+    @Override public AnimalEntity change(AnimalEntity animal) {
         if (findById(animal.getId()) == null) {
             throw new AnimalDoesNotExistException("Животного с id = %d не существует".formatted(animal.getId()));
         }
@@ -65,7 +65,7 @@ public class AnimalServiceImpl implements AnimalService {
      * @param id
      * @throws AnimalDoesNotExistException если животное с таким идентификатором не существует
      */
-    @Override public Animal delete(Long id) {
+    @Override public AnimalEntity delete(Long id) {
 
         return animalRepository.findById(id)
                                          .map(a -> {
