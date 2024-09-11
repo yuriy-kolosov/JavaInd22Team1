@@ -32,4 +32,10 @@ databaseChangeLog:
   - include:
       file:
         - liquibase/scripts/add_chat_id_at_volunteer.sql
+  - include:
+      file:
+        - liquibase/scripts/add_attributes_at_shelters.sql
+  - include:
+      file:
+        - liquibase/scripts/drop_column_directions_at_shelters.sql
 
