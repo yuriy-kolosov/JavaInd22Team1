@@ -15,14 +15,11 @@ public class ShelterEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String type;
     private String contacts;
-
     @Column(name = "media_type")
     private String mediaType;
-
     private String rules;
 
     @JsonIgnore

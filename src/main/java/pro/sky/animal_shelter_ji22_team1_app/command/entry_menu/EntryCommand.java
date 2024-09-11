@@ -1,13 +1,14 @@
-package pro.sky.animal_shelter_ji22_team1_app.command;
+package pro.sky.animal_shelter_ji22_team1_app.command.entry_menu;
 
 import org.springframework.stereotype.Component;
+import pro.sky.animal_shelter_ji22_team1_app.command.Command;
 
 @Component
 public class EntryCommand implements Command {
 
-    private final Menu menu;
+    private final EntryMenu menu;
 
-    private EntryCommand(Menu menu) {
+    private EntryCommand(EntryMenu menu) {
         this.menu = menu;
     }
 
