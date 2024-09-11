@@ -38,4 +38,7 @@ databaseChangeLog:
   - include:
       file:
         - liquibase/scripts/drop_column_directions_at_shelters.sql
+  - include:
+      file:
+        - liquibase/scripts/drop_not_null_location_scheme_at_shelters.sql
 
