@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import pro.sky.animal_shelter_ji22_team1_app.command.RemoteControl;
 import pro.sky.animal_shelter_ji22_team1_app.entity.Type;
 import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
+import pro.sky.animal_shelter_ji22_team1_app.exception.UserDoesNotExistException;
 import pro.sky.animal_shelter_ji22_team1_app.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -39,36 +40,39 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
 
-            saveUser(update);
+            if (update.message() != null) {
 
-            Long chatId = update.message().chat().id();
+                saveUser(update);
 
-            switch (update.message().text()) {
+                Long chatId = update.message().chat().id();
+
+                switch (update.message().text()) {
 //                                                                                          Menu Command from Point#0
-                case "/start" -> sendMessage(chatId, remoteControl.start());
-                case "/help" -> sendMessage(chatId, remoteControl.help());
+                    case "/start" -> sendMessage(chatId, remoteControl.start());
+                    case "/help" -> sendMessage(chatId, remoteControl.help());
 //                                                                                                      ...
 //                                                                                          Menu Command from Point#1
-                case "/shelter_info" -> sendMessage(chatId, remoteControl.shelterInfo());
+                    case "/shelter_info" -> sendMessage(chatId, remoteControl.shelterInfo());
 //                                                                                                      ...
 //                                                                                          Menu Command from Point#2
-                case "/entry" -> sendMessage(chatId, remoteControl.entry());
-                case "/pets" -> sendMessage(chatId, remoteControl.pets());
-                case "/rules" -> sendMessage(chatId, remoteControl.rules());
+                    case "/entry" -> sendMessage(chatId, remoteControl.entry());
+                    case "/pets" -> sendMessage(chatId, remoteControl.pets());
+                    case "/rules" -> sendMessage(chatId, remoteControl.rules());
 //                                                                                                      ...
 //                                                                                          Menu Command from Point#3
-                case "/dailyreportform" -> sendMessage(chatId, remoteControl.dailyReportForm());
+                    case "/dailyreportform" -> sendMessage(chatId, remoteControl.dailyReportForm());
 //                                                                                      ...
-                case "/location" -> sendMessage(chatId,remoteControl.location());
+                    case "/location" -> sendMessage(chatId, remoteControl.location());
 
-                case "/shelter_contacts"->sendMessage(chatId,remoteControl.shelterContacts());
+                    case "/shelter_contacts" -> sendMessage(chatId, remoteControl.shelterContacts());
 
-                case "/health_and_safety"->sendMessage(chatId,remoteControl.heathAndSafety());
+                    case "/health_and_safety" -> sendMessage(chatId, remoteControl.heathAndSafety());
 
-                case "/client_contacts"-> sendMessage(chatId,remoteControl.clientContacts());
+                    case "/client_contacts" -> sendMessage(chatId, remoteControl.clientContacts());
 //                                                                                          No such command
-                default -> sendMessage(chatId, "такой команды не существует. Вы можете вызвать справку" +
-                                               " командой /help");
+                    default -> sendMessage(chatId, "такой команды не существует. Вы можете вызвать справку" +
+                            " командой /help");
+                }
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;

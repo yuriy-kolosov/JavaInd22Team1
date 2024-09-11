@@ -2,6 +2,8 @@ package pro.sky.animal_shelter_ji22_team1_app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -17,10 +19,14 @@ public class ShelterEntity {
     private Long id;
     private String name;
     private String type;
+    private String address;
+    private String schedule;
     private String contacts;
+    private String rules;
+    private String safety_recommendations;
+
     @Column(name = "media_type")
     private String mediaType;
-    private String rules;
 
     @JsonIgnore
     @Column(name = "location_scheme")
@@ -53,6 +59,22 @@ public class ShelterEntity {
         this.type = type;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
     public String getContacts() {
         return contacts;
     }
@@ -61,20 +83,28 @@ public class ShelterEntity {
         this.contacts = contacts;
     }
 
-    public String getMediaType() {
-        return mediaType;
-    }
-
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
-    }
-
     public String getRules() {
         return rules;
     }
 
     public void setRules(String rules) {
         this.rules = rules;
+    }
+
+    public String getSafety_recommendations() {
+        return safety_recommendations;
+    }
+
+    public void setSafety_recommendations(String safety_recommendations) {
+        this.safety_recommendations = safety_recommendations;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
     }
 
     public byte[] getLocationSchemeData() {
@@ -89,12 +119,22 @@ public class ShelterEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ShelterEntity that = (ShelterEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
+        ShelterEntity shelter = (ShelterEntity) o;
+        return Objects.equals(id, shelter.id) && Objects.equals(name, shelter.name) && Objects.equals(type, shelter.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, type);
     }
+
+    @Override
+    public String toString() {
+        return "ShelterEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
+
 }
