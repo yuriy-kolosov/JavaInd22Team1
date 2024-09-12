@@ -37,4 +37,38 @@ public class UserSafer {
 
         userRepository.save(userEntity);
     }
+
+    public void safeFirstname(Update update){
+        UserEntity user = findUser(update);
+
+        user.setFirstname(update.message().text().substring(10));
+        userRepository.save(user);
+    }
+
+    public void safeSurname(Update update){
+        UserEntity user = findUser(update);
+
+        user.setSurname(update.message().text().substring(7));
+        userRepository.save(user);
+    }
+
+    public void safeLastname(Update update){
+        UserEntity user = findUser(update);
+
+        user.setLastname(update.message().text().substring(9));
+        userRepository.save(user);
+    }
+
+    public void safePhone(Update update){
+        UserEntity user = findUser(update);
+
+        user.setPhone(update.message().text());
+        userRepository.save(user);
+    }
+
+    private UserEntity findUser(Update update){
+        Long chatId = update.message().chat().id();
+
+        return userRepository.findByChatId(chatId);
+    }
 }
