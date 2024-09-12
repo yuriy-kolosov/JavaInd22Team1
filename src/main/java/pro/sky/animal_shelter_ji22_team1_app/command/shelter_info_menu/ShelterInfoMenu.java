@@ -20,8 +20,8 @@ public class ShelterInfoMenu {
                 /location - Чтобы ознакомиться со схемой проезда к нему
                 /shelter_contacts - Контактные данные охраны и правила оформления пропуска+
                 /health_and_safety - Общие правила техники безопасности на территории приюта
-                /client_contacts - Оставить контактные данные"+
-                /volunteer - связаться с волонтером
+                /client_contacts - Оставить контактные данные
+                /volunteer - Связаться с волонтером
                 """
                .formatted(shelter.getName(), shelter.getContacts());
     }
@@ -30,14 +30,20 @@ public class ShelterInfoMenu {
     }
 
     public String shelterContacts(){
-        return "контактные данные охраны и схемы проезда";
+        return shelterService.findFirst().getContacts();
     }
 
     public String healthAndSafety(){
-        return "информация о технике безопасности";
+        return shelterService.findFirst().getSafety_recommendations();
     }
 
     public String clientContacts(){
-        return "запись контактной информации";
+        return """
+                Давайте сохраним ваши данные для будующего сотрудничества!
+                /firstname - Ввести имя 
+                /surname - Ввесте отчество
+                /lastname - Ввести фамилию
+                /phone - Ввести контактный телефон
+                """;
     }
 }
