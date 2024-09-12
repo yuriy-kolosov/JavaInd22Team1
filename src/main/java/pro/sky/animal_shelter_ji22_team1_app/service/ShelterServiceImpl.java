@@ -119,4 +119,9 @@ public class ShelterServiceImpl implements ShelterService {
 
     }
 
+    @Override
+    public ShelterEntity findFirst() {
+        return shelterRepository.findFirstByOrderById();
+    }
+
 }

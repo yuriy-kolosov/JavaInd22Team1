@@ -13,6 +13,7 @@ import pro.sky.animal_shelter_ji22_team1_app.entity.Type;
 import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
 import pro.sky.animal_shelter_ji22_team1_app.exception.UserDoesNotExistException;
 import pro.sky.animal_shelter_ji22_team1_app.repository.UserRepository;
+import pro.sky.animal_shelter_ji22_team1_app.user_safer.UserSafer;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,13 +23,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
     private final RemoteControl remoteControl;
-    private final UserRepository userRepository;
+    private final UserSafer userSafer;
 
     public TelegramBotUpdatesListener(TelegramBot telegramBot, RemoteControl remoteControl,
-                                      UserRepository userRepository) {
+                                      UserSafer userSafer) {
         this.telegramBot = telegramBot;
         this.remoteControl = remoteControl;
-        this.userRepository = userRepository;
+        this.userSafer = userSafer;
     }
 
     @PostConstruct
@@ -40,9 +41,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
 
-            if (update.message() != null) {
+//            if (update.message() != null) {
 
-                saveUser(update);
+                userSafer.saveUser(update);
 
                 Long chatId = update.message().chat().id();
 
@@ -73,7 +74,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     default -> sendMessage(chatId, "такой команды не существует. Вы можете вызвать справку" +
                             " командой /help");
                 }
-            }
+//            }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
@@ -82,26 +83,4 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         SendMessage message = new SendMessage(chatId, text);
         SendResponse response = telegramBot.execute(message);
     }
-
-    private void saveUser(Update update) {
-        if (userRepository.findByChatId(update.message().chat().id()) != null) {
-            return;
-        }
-
-        User user = update.message().from();
-        UserEntity userEntity = new UserEntity();
-
-        userEntity.setFirstname(user.firstName());
-        userEntity.setLastname(user.lastName());
-        userEntity.setChatId(update.message().chat().id());
-        userEntity.setRegistrationDate(LocalDateTime.now());
-        userEntity.setType(Type.NEW_CLIENT);
-        userEntity.setLogin(user.username());
-
-        userEntity.setSurname("asdgasdg");
-        userEntity.setPhone("asdgasg");
-
-        userRepository.save(userEntity);
-    }
-
 }
