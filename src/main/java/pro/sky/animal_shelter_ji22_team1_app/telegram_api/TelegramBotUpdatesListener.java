@@ -13,6 +13,7 @@ import pro.sky.animal_shelter_ji22_team1_app.entity.Type;
 import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
 import pro.sky.animal_shelter_ji22_team1_app.exception.UserDoesNotExistException;
 import pro.sky.animal_shelter_ji22_team1_app.repository.UserRepository;
+import pro.sky.animal_shelter_ji22_team1_app.user_safer.UserSafer;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,13 +23,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
     private final RemoteControl remoteControl;
-    private final UserRepository userRepository;
+    private final UserSafer userSafer;
 
     public TelegramBotUpdatesListener(TelegramBot telegramBot, RemoteControl remoteControl,
-                                      UserRepository userRepository) {
+                                      UserSafer userSafer) {
         this.telegramBot = telegramBot;
         this.remoteControl = remoteControl;
-        this.userRepository = userRepository;
+        this.userSafer = userSafer;
     }
 
     @PostConstruct
@@ -40,40 +41,62 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
 
-            if (update.message() != null) {
+//            if (update.message() != null) {
 
-                saveUser(update);
+            userSafer.saveUser(update);
 
-                Long chatId = update.message().chat().id();
+            Long chatId = update.message().chat().id();
 
-                switch (update.message().text()) {
+            if (update.message().text().matches("firstname\\s\\w+")) {
+                userSafer.safeFirstname(update);
+            }
+
+            if (update.message().text().matches("surname\\s\\w+")) {
+                userSafer.safeSurname(update);
+            }
+
+            if(update.message().text().matches("lastname\\s\\w+")){
+                userSafer.safeLastname(update);
+            }
+
+            if(update.message().text().matches("\\+7\\s\\d{3}\\s\\d{3}\\s\\d{2}-\\d{2}")){
+                userSafer.safePhone(update);
+            }
+
+            switch (update.message().text()) {
 //                                                                                          Menu Command from Point#0
-                    case "/start" -> sendMessage(chatId, remoteControl.start());
-                    case "/help" -> sendMessage(chatId, remoteControl.help());
+                case "/start" -> sendMessage(chatId, remoteControl.start());
+                case "/help" -> sendMessage(chatId, remoteControl.help());
 //                                                                                                      ...
 //                                                                                          Menu Command from Point#1
-                    case "/shelter_info" -> sendMessage(chatId, remoteControl.shelterInfo());
+                case "/shelter_info" -> sendMessage(chatId, remoteControl.shelterInfo());
 //                                                                                                      ...
 //                                                                                          Menu Command from Point#2
-                    case "/entry" -> sendMessage(chatId, remoteControl.entry());
-                    case "/pets" -> sendMessage(chatId, remoteControl.pets());
-                    case "/rules" -> sendMessage(chatId, remoteControl.rules());
+                case "/entry" -> sendMessage(chatId, remoteControl.entry());
+                case "/pets" -> sendMessage(chatId, remoteControl.pets());
+                case "/rules" -> sendMessage(chatId, remoteControl.rules());
 //                                                                                                      ...
 //                                                                                          Menu Command from Point#3
-                    case "/dailyreportform" -> sendMessage(chatId, remoteControl.dailyReportForm());
+                case "/dailyreportform" -> sendMessage(chatId, remoteControl.dailyReportForm());
 //                                                                                      ...
-                    case "/location" -> sendMessage(chatId, remoteControl.location());
+                case "/location" -> sendMessage(chatId, remoteControl.location());
 
-                    case "/shelter_contacts" -> sendMessage(chatId, remoteControl.shelterContacts());
+                case "/shelter_contacts" -> sendMessage(chatId, remoteControl.shelterContacts());
 
-                    case "/health_and_safety" -> sendMessage(chatId, remoteControl.heathAndSafety());
+                case "/health_and_safety" -> sendMessage(chatId, remoteControl.heathAndSafety());
 
-                    case "/client_contacts" -> sendMessage(chatId, remoteControl.clientContacts());
+                case "/client_contacts" -> sendMessage(chatId, remoteControl.clientContacts());
+
+                case "/firstname" -> sendMessage(chatId, "Введите имя в формате: firstname Имя");
+                case "/surname" -> sendMessage(chatId, "Введите отчество в формате: surname Отчество");
+                case "/lastname" -> sendMessage(chatId, "Введите фамилию в формате: lastname Фамилия");
+                case "/phone" -> sendMessage(chatId,
+                        "Введите номер кконтактного телефона в формате: +7 999 999 99-99");
 //                                                                                          No such command
-                    default -> sendMessage(chatId, "такой команды не существует. Вы можете вызвать справку" +
-                            " командой /help");
-                }
+                default -> sendMessage(chatId, "такой команды не существует. Вы можете вызвать справку" +
+                                               " командой /help");
             }
+//            }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
@@ -82,26 +105,4 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         SendMessage message = new SendMessage(chatId, text);
         SendResponse response = telegramBot.execute(message);
     }
-
-    private void saveUser(Update update) {
-        if (userRepository.findByChatId(update.message().chat().id()) != null) {
-            return;
-        }
-
-        User user = update.message().from();
-        UserEntity userEntity = new UserEntity();
-
-        userEntity.setFirstname(user.firstName());
-        userEntity.setLastname(user.lastName());
-        userEntity.setChatId(update.message().chat().id());
-        userEntity.setRegistrationDate(LocalDateTime.now());
-        userEntity.setType(Type.NEW_CLIENT);
-        userEntity.setLogin(user.username());
-
-        userEntity.setSurname("asdgasdg");
-        userEntity.setPhone("asdgasg");
-
-        userRepository.save(userEntity);
-    }
-
 }

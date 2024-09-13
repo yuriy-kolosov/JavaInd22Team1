@@ -20,4 +20,6 @@ public interface ShelterService {
 
     void deleteShelter(Long shelterId);
 
+    ShelterEntity findFirst();
+
 }
