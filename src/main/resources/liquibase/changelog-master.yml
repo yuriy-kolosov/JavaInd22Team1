@@ -41,4 +41,12 @@ databaseChangeLog:
   - include:
       file:
         - liquibase/scripts/drop_not_null_location_scheme_at_shelters.sql
-
+  - include:
+      file:
+        - liquibase/scripts/add_type_at_animals.sql
+  - include:
+      file:
+        - liquibase/scripts/add_description_at_recommendations.sql
+  - include:
+      file:
+        - liquibase/scripts/add_type_at_recommendations.sql

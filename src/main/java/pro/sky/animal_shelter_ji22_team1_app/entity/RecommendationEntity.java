@@ -12,9 +12,22 @@ public class RecommendationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    @Enumerated(EnumType.STRING)
+    private AnimalType type;
+
+    @Enumerated(EnumType.STRING)
+    private TitleType title;
+
+    private String description;
 
     public RecommendationEntity() {
+    }
+
+    public RecommendationEntity(Long id, AnimalType type, TitleType title, String description) {
+        this.id = id;
+        this.type = type;
+        this.title = title;
+        this.description = description;
     }
 
     public Long getId() {
@@ -25,12 +38,28 @@ public class RecommendationEntity {
         this.id = id;
     }
 
-    public String getTitle() {
+    public AnimalType getType() {
+        return type;
+    }
+
+    public void setType(AnimalType type) {
+        this.type = type;
+    }
+
+    public TitleType getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(TitleType title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -38,19 +67,21 @@ public class RecommendationEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RecommendationEntity that = (RecommendationEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(title, that.title);
+        return Objects.equals(id, that.id) && type == that.type && title == that.title && Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title);
+        return Objects.hash(id, type, title, description);
     }
 
     @Override
     public String toString() {
         return "RecommendationEntity{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
+                ", type=" + type +
+                ", title=" + title +
+                ", description='" + description + '\'' +
                 '}';
     }
 
