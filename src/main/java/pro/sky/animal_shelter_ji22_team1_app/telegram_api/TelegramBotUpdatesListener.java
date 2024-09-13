@@ -4,10 +4,14 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.request.SendPhoto;
 import com.pengrad.telegrambot.response.SendResponse;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.animal_shelter_ji22_team1_app.command.RemoteControl;
+import pro.sky.animal_shelter_ji22_team1_app.repository.ShelterRepository;
+import pro.sky.animal_shelter_ji22_team1_app.service.ShelterService;
 import pro.sky.animal_shelter_ji22_team1_app.user_safer.UserSafer;
 
 import java.util.List;
@@ -17,6 +21,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
     private final RemoteControl remoteControl;
+    @Autowired
+    private ShelterService shelterService;
 
 
     private final UserSafer userSafer;
@@ -74,7 +80,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 //                                                                                          Menu Command from Point#3
                     case "/daily_report_form" -> sendMessage(chatId, remoteControl.dailyReportForm());
 //                                                                                      ...
-                    case "/location" -> sendMessage(chatId, remoteControl.location());
+                    case "/location" -> {
+                        SendPhoto sendPhoto = new SendPhoto(chatId,shelterService.findFirst().getLocationSchemeData());
+                        SendResponse sendResponse = telegramBot.execute(sendPhoto);
+                        sendMessage(chatId, remoteControl.location());
+                    }
 
                     case "/shelter_contacts" -> sendMessage(chatId, remoteControl.shelterContacts());
 
