@@ -4,16 +4,17 @@ import org.springframework.stereotype.Component;
 import pro.sky.animal_shelter_ji22_team1_app.command.Command;
 
 @Component
-public class PetsCommand implements Command {
+public class DogsCommand implements Command {
 
     private final EntryMenu menu;
 
-    public PetsCommand(EntryMenu menu) {
+    public DogsCommand(EntryMenu menu) {
         this.menu = menu;
     }
 
     @Override
     public String execute() {
-        return menu.pets();
+        return menu.dogs();
     }
+
 }

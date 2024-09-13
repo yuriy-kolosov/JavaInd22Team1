@@ -10,4 +10,7 @@ public interface ShelterRepository extends JpaRepository<ShelterEntity, Long> {
 
     @NotNull
     List<ShelterEntity> findAll();
+
+    ShelterEntity findFirstByOrderById();
+
 }

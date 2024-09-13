@@ -44,4 +44,12 @@ databaseChangeLog:
   - include:
       file:
         - liquibase/scripts/add_table_reports.sql
-
+  - include:
+      file:
+        - liquibase/scripts/add_type_at_animals.sql
+  - include:
+      file:
+        - liquibase/scripts/add_description_at_recommendations.sql
+  - include:
+      file:
+        - liquibase/scripts/add_type_at_recommendations.sql

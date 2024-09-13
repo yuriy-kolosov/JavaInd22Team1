@@ -13,31 +13,38 @@ public class ShelterInfoMenu {
     }
 
     public String shelterInfo() {
-//        ShelterEntity shelter = shelterService.findShelterById(0L);
+        ShelterEntity shelter = shelterService.findFirst();
 
         return """
-                Приют "вызов из бд" расположен по адресу: вызов из бд) +
-                /location - Чтобы ознакомиться со схемой проезда к нему
-                /shelter_contacts - Контактные данные охраны и правила оформления пропуска+
-                /health_and_safety - Общие правила техники безопасности на территории приюта
-                /client_contacts - Оставить контактные данные"+
-                /volunteer - связаться с волонтером
-                """;
-//                .formatted(shelter.getName(), shelter.getContacts());
+                Приют "%s" расположен по адресу: %s) +
+                /location           - Чтобы ознакомиться со схемой проезда к нему;
+                /shelter_contacts   - Контактные данные охраны и правила оформления пропуска;
+                /health_and_safety  - Общие правила техники безопасности на территории приюта;
+                /client_contacts    - Оставить контактные данные;
+                /volunteer          - Связаться с волонтером
+                """
+                .formatted(shelter.getName(), shelter.getContacts());
     }
-    public String location(){
+
+    public String location() {
         return "информация о проезде к приюту";
     }
 
-    public String shelterContacts(){
-        return "контактные данные охраны и схемы проезда";
+    public String shelterContacts() {
+        return shelterService.findFirst().getContacts();
     }
 
-    public String healthAndSafety(){
-        return "информация о технике безопасности";
+    public String healthAndSafety() {
+        return shelterService.findFirst().getSafety_recommendations();
     }
 
-    public String clientContacts(){
-        return "запись контактной информации";
+    public String clientContacts() {
+        return """
+                Давайте сохраним ваши данные для будущего сотрудничества:
+                /firstname  - Ввести имя;
+                /surname    - Ввести отчество;
+                /lastname   - Ввести фамилию;
+                /phone      - Ввести контактный телефон
+                """;
     }
 }
