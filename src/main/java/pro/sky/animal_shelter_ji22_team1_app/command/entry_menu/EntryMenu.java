@@ -3,7 +3,6 @@ package pro.sky.animal_shelter_ji22_team1_app.command.entry_menu;
 import org.springframework.stereotype.Component;
 import pro.sky.animal_shelter_ji22_team1_app.repository.AnimalRepository;
 import pro.sky.animal_shelter_ji22_team1_app.repository.RecommendationRepository;
-import pro.sky.animal_shelter_ji22_team1_app.repository.ShelterRepository;
 
 import java.util.Arrays;
 
@@ -15,14 +14,10 @@ public class EntryMenu {
 
     private final AnimalRepository animalRepository;
     private final RecommendationRepository recommendationRepository;
-    private final ShelterRepository shelterRepository;
 
-    public EntryMenu(AnimalRepository animalRepository
-            , RecommendationRepository recommendationRepository
-            , ShelterRepository shelterRepository) {
+    public EntryMenu(AnimalRepository animalRepository, RecommendationRepository recommendationRepository) {
         this.animalRepository = animalRepository;
         this.recommendationRepository = recommendationRepository;
-        this.shelterRepository = shelterRepository;
     }
 
     public String entry() {
@@ -74,9 +69,9 @@ public class EntryMenu {
     public String cats() {
         return Arrays.toString(animalRepository.findAll().stream()
                 .filter((a) -> a.getType().equals(CAT))
-                .map((a) -> "Имя животного: " + a.getName().toString() +
+                .map((a) -> "Имя животного: " + a.getName() +
                         "; возраст: " + a.getAge().toString() +
-                        "; порода: " + a.getBreed().toString())
+                        "; порода: " + a.getBreed())
                 .toArray());
     }
 

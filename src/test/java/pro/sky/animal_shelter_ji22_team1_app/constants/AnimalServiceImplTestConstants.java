@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import pro.sky.animal_shelter_ji22_team1_app.entity.AnimalEntity;
+import pro.sky.animal_shelter_ji22_team1_app.entity.AnimalType;
 
 public class AnimalServiceImplTestConstants {
     public static final AnimalEntity BOBIK = new AnimalEntity(
             1L,
             "Bobik",
             1,
+            AnimalType.DOG,
             "Dvorteryer",
             LocalDateTime.parse("2024-06-08 11:30:00",
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
@@ -19,6 +21,7 @@ public class AnimalServiceImplTestConstants {
             2L,
             "Murka",
             2,
+            AnimalType.CAT,
             "Siamskaya",
             LocalDateTime.parse("2024-06-08 12:30:00",
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
@@ -27,6 +30,7 @@ public class AnimalServiceImplTestConstants {
             3L,
             "Sharik",
             0,
+            AnimalType.DOG,
             "Pudel",
             LocalDateTime.parse("2024-06-08 10:30:00",
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
