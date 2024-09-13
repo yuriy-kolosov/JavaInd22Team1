@@ -43,23 +43,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                 Long chatId = update.message().chat().id();
 
-//                switch (update.message().text()) {
-                if (update.message().text().matches("firstname\\s\\w+")) {
-                    userSafer.safeFirstname(update);
-                }
-
-                if (update.message().text().matches("surname\\s\\w+")) {
-                    userSafer.safeSurname(update);
-                }
-
-                if (update.message().text().matches("lastname\\s\\w+")) {
-                    userSafer.safeLastname(update);
-                }
-
-                if (update.message().text().matches("\\+7\\s\\d{3}\\s\\d{3}\\s\\d{2}-\\d{2}")) {
-                    userSafer.safePhone(update);
-                }
-
                 switch (update.message().text()) {
 
                     case "/start" -> sendMessage(chatId, remoteControl.start());
@@ -104,8 +87,24 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     case "/phone" -> sendMessage(chatId,
                             "Введите номер контактного телефона в формате: +7 999 999 99-99");
 //                                                                                          No such command
-                    default -> sendMessage(chatId, "такой команды не существует. Вы можете вызвать справку" +
-                            " командой /help");
+                    default -> {
+                        if (update.message().text().matches("firstname\\s\\w+")) {
+                            userSafer.safeFirstname(update);
+                            sendMessage(chatId, "имя сохранено");
+                        } else if (update.message().text().matches("surname\\s\\w+")) {
+                            userSafer.safeSurname(update);
+                            sendMessage(chatId, "имя сохранено");
+                        } else if (update.message().text().matches("lastname\\s\\w+")) {
+                            userSafer.safeLastname(update);
+                            sendMessage(chatId, "имя сохранено");
+                        } else if (update.message().text().matches("\\+7\\s\\d{3}\\s\\d{3}\\s\\d{2}-\\d{2}")) {
+                            userSafer.safePhone(update);
+                            sendMessage(chatId, "имя сохранено");
+                        } else {
+                            sendMessage(chatId, "такой команды не существует. Вы можете вызвать справку" +
+                                                " командой /help");
+                        }
+                    }
                 }
             }
         });
