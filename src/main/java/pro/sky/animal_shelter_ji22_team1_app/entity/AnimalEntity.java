@@ -1,10 +1,7 @@
 package pro.sky.animal_shelter_ji22_team1_app.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -23,6 +20,9 @@ public class AnimalEntity {
 
     private Integer age;
 
+    @Enumerated(EnumType.STRING)
+    private AnimalType type;
+
     private String breed;
 
     private LocalDateTime regDate;
@@ -32,10 +32,11 @@ public class AnimalEntity {
     public AnimalEntity() {
     }
 
-    public AnimalEntity(Long id, String name, Integer age, String breed, LocalDateTime regDate, String comment) {
+    public AnimalEntity(Long id, String name, Integer age, AnimalType type, String breed, LocalDateTime regDate, String comment) {
         this.id = id;
         this.name = name;
         this.age = age;
+        this.type = type;
         this.breed = breed;
         this.regDate = regDate;
         this.comment = comment;
@@ -63,6 +64,14 @@ public class AnimalEntity {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public AnimalType getType() {
+        return type;
+    }
+
+    public void setType(AnimalType type) {
+        this.type = type;
     }
 
     public String getBreed() {
