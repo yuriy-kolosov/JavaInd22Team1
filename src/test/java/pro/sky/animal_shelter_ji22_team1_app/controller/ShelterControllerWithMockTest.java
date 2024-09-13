@@ -15,9 +15,11 @@ import pro.sky.animal_shelter_ji22_team1_app.entity.ShelterEntity;
 import pro.sky.animal_shelter_ji22_team1_app.repository.AnimalRepository;
 import pro.sky.animal_shelter_ji22_team1_app.repository.ShelterRepository;
 import pro.sky.animal_shelter_ji22_team1_app.repository.UserRepository;
+import pro.sky.animal_shelter_ji22_team1_app.repository.VolunteerRepository;
 import pro.sky.animal_shelter_ji22_team1_app.service.AnimalServiceImpl;
 import pro.sky.animal_shelter_ji22_team1_app.service.ShelterServiceImpl;
 import pro.sky.animal_shelter_ji22_team1_app.service.UserServiceImpl;
+import pro.sky.animal_shelter_ji22_team1_app.service.VolunteerServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +60,13 @@ public class ShelterControllerWithMockTest {
     private UserServiceImpl userServiceImpl;
     @InjectMocks
     private UserController userController;
+
+    @MockBean
+    private VolunteerRepository volunteerRepository;
+    @SpyBean
+    private VolunteerServiceImpl volunteerServiceImpl;
+    @InjectMocks
+    private VolunteerController volunteerController;
 
     public ShelterControllerWithMockTest() {
     }
