@@ -10,7 +10,6 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.animal_shelter_ji22_team1_app.command.RemoteControl;
-import pro.sky.animal_shelter_ji22_team1_app.repository.ShelterRepository;
 import pro.sky.animal_shelter_ji22_team1_app.service.ShelterService;
 import pro.sky.animal_shelter_ji22_team1_app.user_safer.UserSafer;
 
@@ -56,7 +55,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 //                                                                                          Menu Command from Point#1
                     case "/shelter_info" -> sendMessage(chatId, remoteControl.shelterInfo());
 //                                                                                          Menu Command from Point#2
-                    case "/entry" -> sendMessage(chatId, remoteControl.entry());
+                    case "/shelter_entry" -> sendMessage(chatId, remoteControl.entry());
 //                                                                                          for choosing types of animals
                     case "/dog" -> sendMessage(chatId, remoteControl.dog());
                     case "/cat" -> sendMessage(chatId, remoteControl.cat());
@@ -80,17 +79,23 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 //                                                                                          Menu Command from Point#3
                     case "/daily_report_form" -> sendMessage(chatId, remoteControl.dailyReportForm());
 //                                                                                      ...
-                    case "/location" -> {
-                        SendPhoto sendPhoto = new SendPhoto(chatId,shelterService.findFirst().getLocationSchemeData());
-                        SendResponse sendResponse = telegramBot.execute(sendPhoto);
-                        sendMessage(chatId, remoteControl.location());
-                    }
+                    case "/shelter_rules" -> sendMessage(chatId, remoteControl.shelterRules());
+                    case "/address_dogs" -> sendMessage(chatId, remoteControl.addressDogs());
+                    case "/address_cats" -> sendMessage(chatId, remoteControl.addressCats());
+//
+                    case "/location_dogs" -> sendImage(chatId, remoteControl.locationDogs());
+                    case "/location_cats" -> sendImage(chatId, remoteControl.locationCats());
 
-                    case "/shelter_contacts" -> sendMessage(chatId, remoteControl.shelterContacts());
+                    case "/schedule_dogs" -> sendMessage(chatId, remoteControl.schedulerDogs());
+                    case "/schedule_cats" -> sendMessage(chatId, remoteControl.schedulerCats());
+
+                    case "/shelter_dogs_contacts" -> sendMessage(chatId, remoteControl.shelterDogsContacts());
+                    case "/shelter_cats_contacts" -> sendMessage(chatId, remoteControl.shelterCatsContacts());
 
                     case "/health_and_safety" -> sendMessage(chatId, remoteControl.heathAndSafety());
 
                     case "/client_contacts" -> sendMessage(chatId, remoteControl.clientContacts());
+
                     case "/firstname" -> sendMessage(chatId, "Введите имя в формате: firstname Имя");
                     case "/surname" -> sendMessage(chatId, "Введите отчество в формате: surname Отчество");
                     case "/lastname" -> sendMessage(chatId, "Введите фамилию в формате: lastname Фамилия");
@@ -112,7 +117,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                             sendMessage(chatId, "имя сохранено");
                         } else {
                             sendMessage(chatId, "такой команды не существует. Вы можете вызвать справку" +
-                                                " командой /help");
+                                    " командой /help");
                         }
                     }
                 }
@@ -124,6 +129,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private void sendMessage(Long chatId, String text) {
         SendMessage message = new SendMessage(chatId, text);
         SendResponse response = telegramBot.execute(message);
+    }
+
+    private void sendImage(Long chatId, byte[] location) {
+        SendPhoto sendPhoto = new SendPhoto(chatId, location);
+        SendResponse response = telegramBot.execute(sendPhoto);
     }
 
 }
