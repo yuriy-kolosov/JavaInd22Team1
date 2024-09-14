@@ -34,6 +34,19 @@ public class ReportEntity {
     private LocalDateTime reportDate;
     private String comment;
 
+    public ReportEntity() {
+    }
+
+    public ReportEntity(Long id, Long requestId, String diet, String health, String addiction, String behaviorChanges, LocalDateTime reportDate, String comment) {
+        this.id = id;
+        this.requestId = requestId;
+        this.diet = diet;
+        this.health = health;
+        this.addiction = addiction;
+        this.behaviorChanges = behaviorChanges;
+        this.reportDate = reportDate;
+        this.comment = comment;
+    }
 
     public Long getId() {
         return id;

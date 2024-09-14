@@ -28,7 +28,7 @@ public class ReportServiceImpl implements ReportService {
      * @return информация со списком отчётов
      */
     @Override
-    public List<ReportEntity> findAllReports() {
+    public List<ReportEntity> findAll() {
         return reportRepository.findAll();
     }
 
@@ -37,7 +37,7 @@ public class ReportServiceImpl implements ReportService {
      * Используется метод репозитория {@link JpaRepository#findById(Object)}
      */
     @Override
-    public ReportEntity findReportById(Long id) {
+    public ReportEntity findById(Long id) {
         return reportRepository.findById(id)
                                .orElseThrow(() -> new ReportDoesNotExistException("Отчёт с номером %d в базе данных отсутствует"
                                                                                           .formatted(id)));
@@ -50,7 +50,7 @@ public class ReportServiceImpl implements ReportService {
      * @param report содержит информацию об отчёте
      */
     @Override
-    public void saveReport(ReportEntity report) {
+    public void save(ReportEntity report) {
         report.setId(null);
         reportRepository.save(report);
     }
@@ -64,7 +64,7 @@ public class ReportServiceImpl implements ReportService {
      * @return обновленная информация об отчёте
      */
     @Override
-    public ReportEntity changeReport(ReportEntity report) {
+    public ReportEntity change(ReportEntity report) {
         ReportEntity reportCurrent = reportRepository.findById(report.getId())
                                                      .orElseThrow(() -> new ReportDoesNotExistException("Отчёт с номером %d в базе данных отсутствует"
                                                                                                                 .formatted(report.getId())));
@@ -78,8 +78,8 @@ public class ReportServiceImpl implements ReportService {
      * Используется метод репозитория {@link JpaRepository#delete(Object)}
      */
     @Override
-    public void deleteReport(Long id) {
-        ReportEntity report = findReportById(id);
+    public void delete(Long id) {
+        ReportEntity report = findById(id);
         if (report == null) {
             throw new ReportDoesNotExistException("Отчёт с номером %d в базе данных отсутствует".formatted(id));
         }
