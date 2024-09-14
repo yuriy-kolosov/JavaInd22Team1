@@ -105,18 +105,18 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     default -> {
                         if (update.message().text().matches("firstname\\s\\w+")) {
                             userSafer.safeFirstname(update);
-                            sendMessage(chatId, "имя сохранено");
+                            sendMessage(chatId, "Принято");
                         } else if (update.message().text().matches("surname\\s\\w+")) {
                             userSafer.safeSurname(update);
-                            sendMessage(chatId, "имя сохранено");
+                            sendMessage(chatId, "Принято");
                         } else if (update.message().text().matches("lastname\\s\\w+")) {
                             userSafer.safeLastname(update);
-                            sendMessage(chatId, "имя сохранено");
+                            sendMessage(chatId, "Принято");
                         } else if (update.message().text().matches("\\+7\\s\\d{3}\\s\\d{3}\\s\\d{2}-\\d{2}")) {
                             userSafer.safePhone(update);
-                            sendMessage(chatId, "имя сохранено");
+                            sendMessage(chatId, "Принято");
                         } else {
-                            sendMessage(chatId, "такой команды не существует. Вы можете вызвать справку" +
+                            sendMessage(chatId, "Такой команды не существует. Вы можете вызвать справку" +
                                     " командой /help");
                         }
                     }

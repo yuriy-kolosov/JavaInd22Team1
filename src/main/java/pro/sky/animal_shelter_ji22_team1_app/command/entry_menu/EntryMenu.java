@@ -28,8 +28,7 @@ public class EntryMenu {
     public String entry() {
         return """
                 Приветствуем Ваше желание усыновить животное из приюта!
-                Для получения необходимой информации, пожалуйста, сообщите,
-                какого питомца вы хотите выбрать:
+                Для получения необходимой информации, пожалуйста, сообщите, какого питомца вы хотите выбрать:
                 /dog - собака;
                 /cat - кошка
                 """;
@@ -91,63 +90,72 @@ public class EntryMenu {
     public String documents() {
         return Arrays.toString(recommendationRepository.findAll().stream()
                 .filter((t) -> t.getTitle().equals(DOCUMENTS))
-                .map((d) -> "<> " + d.getDescription())
+                .map((d) -> "<> " + d.getDescription() +
+                        "\n")
                 .toArray());
     }
 
     public String transportation() {
         return Arrays.toString(recommendationRepository.findAll().stream()
                 .filter((t) -> t.getTitle().equals(TRANSPORTATION))
-                .map((d) -> "<> " + d.getDescription())
+                .map((d) -> "<> " + d.getDescription() +
+                        "\n")
                 .toArray());
     }
 
     public String petHouse() {
         return Arrays.toString(recommendationRepository.findAll().stream()
                 .filter((t) -> t.getTitle().equals(PET_HOUSE))
-                .map((d) -> "<> " + d.getDescription())
+                .map((d) -> "<> " + d.getDescription() +
+                        "\n")
                 .toArray());
     }
 
     public String invalidPetHouse() {
         return Arrays.toString(recommendationRepository.findAll().stream()
                 .filter((t) -> t.getTitle().equals(INVALID_PET_HOUSE))
-                .map((d) -> "<> " + d.getDescription())
+                .map((d) -> "<> " + d.getDescription() +
+                        "\n")
                 .toArray());
     }
 
     public String waiverList() {
         return Arrays.toString(recommendationRepository.findAll().stream()
                 .filter((t) -> t.getTitle().equals(WAIVER_LIST))
-                .map((d) -> "<> " + d.getDescription())
+                .map((d) -> "<> " + d.getDescription() +
+                        "\n")
                 .toArray());
     }
 
     public String dogRules() {
         return Arrays.toString(recommendationRepository.findAll().stream()
                 .filter((t) -> t.getTitle().equals(DOG_RULES))
-                .map((r) -> "<> " + r.getDescription())
+                .map((r) -> "<> " + r.getDescription() +
+                        "\n")
                 .toArray());
     }
 
     public String puppyHouse() {
         return Arrays.toString(recommendationRepository.findAll().stream()
                 .filter((t) -> t.getTitle().equals(PUPPY_HOUSE))
-                .map((d) -> "<> " + d.getDescription())
+                .map((d) -> "<> " + d.getDescription() +
+                        "\n")
                 .toArray());
     }
 
     public String dogHandler() {
         return Arrays.toString(recommendationRepository.findAll().stream()
                 .filter((t) -> t.getTitle().equals(DOG_HANDLER))
-                .map((d) -> "<> " + d.getDescription())
+                .map((d) -> "<> " + d.getDescription() +
+                        "\n")
                 .toArray());
     }
 
     public String dogHandlerList() {
         return Arrays.toString(recommendationRepository.findAll().stream()
                 .filter((t) -> t.getTitle().equals(DOG_HANDLER_LIST))
-                .map((d) -> "<> " + d.getDescription())
+                .map((d) -> "<> " + d.getDescription() +
+                        "\n")
                 .toArray());
     }
 
@@ -155,7 +163,8 @@ public class EntryMenu {
     public String catRules() {
         return Arrays.toString(recommendationRepository.findAll().stream()
                 .filter((t) -> t.getTitle().equals(CAT_RULES))
-                .map((r) -> "<> " + r.getDescription())
+                .map((r) -> "<> " + r.getDescription() +
+                        "\n")
                 .toArray());
     }
 
