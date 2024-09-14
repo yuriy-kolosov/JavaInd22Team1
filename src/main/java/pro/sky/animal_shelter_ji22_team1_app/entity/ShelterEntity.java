@@ -8,6 +8,7 @@ import java.util.Objects;
 
 /**
  * Класс, определяющий структуру базы данных сервиса Shelter
+ *
  * @author yuriy_kolosov
  */
 @Entity
@@ -17,13 +18,17 @@ public class ShelterEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
-    private String type;
+
+    @Enumerated(EnumType.STRING)
+    private AnimalType type;
+
     private String address;
     private String schedule;
     private String contacts;
     private String rules;
-    private String safety_recommendations;
+    private String safetyRecommendations;
 
     @Column(name = "media_type")
     private String mediaType;
@@ -51,11 +56,11 @@ public class ShelterEntity {
         this.name = name;
     }
 
-    public String getType() {
+    public AnimalType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(AnimalType type) {
         this.type = type;
     }
 
@@ -91,12 +96,12 @@ public class ShelterEntity {
         this.rules = rules;
     }
 
-    public String getSafety_recommendations() {
-        return safety_recommendations;
+    public String getSafetyRecommendations() {
+        return safetyRecommendations;
     }
 
-    public void setSafety_recommendations(String safety_recommendations) {
-        this.safety_recommendations = safety_recommendations;
+    public void setSafetyRecommendations(String safetyRecommendations) {
+        this.safetyRecommendations = safetyRecommendations;
     }
 
     public String getMediaType() {
@@ -120,7 +125,7 @@ public class ShelterEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShelterEntity shelter = (ShelterEntity) o;
-        return Objects.equals(id, shelter.id) && Objects.equals(name, shelter.name) && Objects.equals(type, shelter.type);
+        return Objects.equals(id, shelter.id) && Objects.equals(name, shelter.name) && type == shelter.type;
     }
 
     @Override
@@ -133,7 +138,7 @@ public class ShelterEntity {
         return "ShelterEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
+                ", type=" + type +
                 '}';
     }
 

@@ -11,6 +11,9 @@ public class RemoteControl {
     @Autowired
     private Map<String, Command> commands;
 
+    @Autowired
+    private Map<String, CommandImage> commandsImage;
+
     public String start() {
         return commands.get("startCommand").execute();
     }
@@ -87,12 +90,40 @@ public class RemoteControl {
         return commands.get("dailyReportFormCommand").execute();
     }
 
-    public String location() {
-        return commands.get("locationCommand").execute();
+    public String shelterRules() {
+        return commands.get("shelterRulesCommand").execute();
     }
 
-    public String shelterContacts() {
-        return commands.get("shelterContactsCommand").execute();
+    public String addressDogs() {
+        return commands.get("addressDogsCommand").execute();
+    }
+
+    public String addressCats() {
+        return commands.get("addressCatsCommand").execute();
+    }
+
+    public byte[] locationDogs() {
+        return commandsImage.get("locationDogsCommand").executeImage();
+    }
+
+    public byte[] locationCats() {
+        return commandsImage.get("locationCatsCommand").executeImage();
+    }
+
+    public String schedulerDogs() {
+        return commands.get("schedulerDogsCommand").execute();
+    }
+
+    public String schedulerCats() {
+        return commands.get("schedulerCatsCommand").execute();
+    }
+
+    public String shelterDogsContacts() {
+        return commands.get("shelterDogsContactsCommand").execute();
+    }
+
+    public String shelterCatsContacts() {
+        return commands.get("shelterCatsContactsCommand").execute();
     }
 
     public String heathAndSafety() {
