@@ -5,14 +5,14 @@ import pro.sky.animal_shelter_ji22_team1_app.entity.ReportEntity;
 
 public interface ReportService {
 
-    Collection<ReportEntity> findAllReports();
+    Collection<ReportEntity> findAll();
 
-    ReportEntity findReportById(Long reportId);
+    ReportEntity findById(Long reportId);
 
-    void saveReport(ReportEntity report);
+    void save(ReportEntity report);
 
-    ReportEntity changeReport(ReportEntity report);
+    ReportEntity change(ReportEntity report);
 
-    void deleteReport(Long reportId);
+    void delete(Long reportId);
 
 }
