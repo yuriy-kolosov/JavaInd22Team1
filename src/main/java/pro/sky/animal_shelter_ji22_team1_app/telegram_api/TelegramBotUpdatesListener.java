@@ -54,7 +54,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 PhotoSize[] photoSizes = update.message().photo();
                 PhotoSize photoSize = photoSizes[0];
                 String fileId = photoSize.fileId();
-                sendMessage(chatId, photoSize.toString());
 
                 GetFile request = new GetFile(fileId);
                 GetFileResponse getFileResponse = telegramBot.execute(request);
@@ -62,7 +61,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 File file = getFileResponse.file();
 
                 String fullPath = telegramBot.getFullFilePath(file);
-                sendMessage(chatId, fullPath);
                 URL url = null;
                 try {
                     url = new URL(fullPath);
