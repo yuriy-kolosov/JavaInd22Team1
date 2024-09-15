@@ -5,6 +5,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class DailyReportFormMenu {
     public String dailyReportForm() {
-        return "Информация об отчетах";
+        return """
+                Доброго времени суток отправьте пожалуйста отчет при помощи следующих команд:
+                /pet_photo - фото животного;
+                /pet_diet - рацион животного;
+                /pet_general - общее самочувствие животного;
+                /pet_behavior - изменение в поведении животного.
+                """;
     }
 }

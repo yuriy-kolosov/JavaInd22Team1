@@ -84,7 +84,5 @@ public class ReportServiceImpl implements ReportService {
             throw new ReportDoesNotExistException("Отчёт с номером %d в базе данных отсутствует".formatted(id));
         }
         reportRepository.delete(report);
-
     }
-
 }
