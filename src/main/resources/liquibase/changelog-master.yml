@@ -71,3 +71,6 @@ databaseChangeLog:
   - include:
       file:
         - liquibase/scripts/add_comment_at_reports.sql
+  - include:
+      file:
+        - liquibase/scripts/add_is_sent_at_reports.sql

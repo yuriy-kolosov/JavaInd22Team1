@@ -13,25 +13,30 @@ import com.pengrad.telegrambot.response.SendResponse;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 import pro.sky.animal_shelter_ji22_team1_app.command.RemoteControl;
+import pro.sky.animal_shelter_ji22_team1_app.message_scheduler.MessageScheduler;
 import pro.sky.animal_shelter_ji22_team1_app.report_safer.ReportSafer;
 import pro.sky.animal_shelter_ji22_team1_app.user_safer.UserSafer;
 
 import java.io.*;
 import java.net.URL;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.*;
 
 @Component
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
     private final RemoteControl remoteControl;
+    private final MessageScheduler messageScheduler;
     private final UserSafer userSafer;
     private final ReportSafer reportSafer;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, RemoteControl remoteControl,
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, RemoteControl remoteControl, MessageScheduler messageScheduler,
                                       UserSafer userSafer, ReportSafer reportSafer) {
         this.telegramBot = telegramBot;
         this.remoteControl = remoteControl;
+        this.messageScheduler = messageScheduler;
         this.userSafer = userSafer;
         this.reportSafer = reportSafer;
     }
@@ -47,6 +52,24 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
             Long chatId = update.message().chat().id();
 
+            LocalDateTime localDateTime = LocalDateTime.now();
+            LocalTime localTimeCurrent = localDateTime.toLocalTime();
+//                      Ежедневный интервал времени рассылки сообщений усыновителям в период их испытательного срока:
+//                                                                          12:00 - 12:05 (локальное время сервера)
+            LocalTime localTimeScheduler1 = LocalTime.of(12, 0, 0, 0);
+            LocalTime localTimeScheduler2 = LocalTime.of(12, 0, 0, 0);
+            Map<Long, String> messages;
+
+            if (localTimeCurrent.isAfter(localTimeScheduler1)
+                    & localTimeCurrent.isBefore(localTimeScheduler2)) {
+
+                messages = messageScheduler.messageSender();
+                for (Map.Entry<Long, String> entry : messages.entrySet()) {
+                    sendMessage(entry.getKey(), entry.getValue());
+                }
+                messageScheduler.messageSenderFlag();
+            }
+//                                                                  Прием фото от усыновителя
             if (update.message().photo() != null) {
                 PhotoSize[] photoSizes = update.message().photo();
                 PhotoSize photoSize = photoSizes[0];
@@ -71,8 +94,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     throw new RuntimeException(e);
                 }
             }
-
-
+//                                                                      Обработка команд диалога с пользователем бота
             if (update.message().text() != null) {
 
                 userSafer.saveUser(update);
@@ -81,7 +103,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                     case "/start" -> sendMessage(chatId, remoteControl.start());
                     case "/help" -> sendMessage(chatId, remoteControl.help());
-                    case "/volunteer" -> sendMessage(chatId, remoteControl.help());
+                    case "/volunteer" -> sendMessage(chatId, remoteControl.volunteer());
 //                                                                                          Menu Command from Point#1
                     case "/shelter_info" -> sendMessage(chatId, remoteControl.shelterInfo());
 //                                                                                          Menu Command from Point#2
@@ -138,9 +160,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     case "/pet_photo" -> sendMessage(chatId, "Отправьте фото питомца");
                     case "/pet_diet" -> sendMessage(chatId, "Отправьте рацион питомца в формате: diet ________");
                     case "/pet_general" -> sendMessage(chatId, "Отправьте информацию о общем самочувствии" +
-                                                               " питомца в формате: general ________");
+                            " питомца в формате: general ________");
                     case "/pet_behavior" -> sendMessage(chatId, "Отправьте информацию об изменениях в " +
-                                                                "поведении питомца в формата: behavior ______________");
+                            "поведении питомца в формата: behavior ______________");
 //                                                                                          No such command
                     default -> {
                         if (update.message().text().matches("firstname\\s.+")) {
@@ -166,7 +188,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                             sendMessage(chatId, "Принято");
                         } else {
                             sendMessage(chatId, "Такой команды не существует. Вы можете вызвать справку" +
-                                                " командой /help");
+                                    " командой /help");
                         }
                     }
                 }
