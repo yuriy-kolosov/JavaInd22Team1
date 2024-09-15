@@ -1,7 +1,7 @@
 package pro.sky.animal_shelter_ji22_team1_app.command;
 
-public interface Command {
+public interface CommandImage {
 
-    String execute();
+    byte[] executeImage();
 
 }

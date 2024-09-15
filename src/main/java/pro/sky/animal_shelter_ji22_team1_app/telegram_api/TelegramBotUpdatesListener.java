@@ -2,18 +2,22 @@ package pro.sky.animal_shelter_ji22_team1_app.telegram_api;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.File;
+import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
+import com.pengrad.telegrambot.response.GetFileResponse;
 import com.pengrad.telegrambot.response.SendResponse;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.animal_shelter_ji22_team1_app.command.RemoteControl;
-import pro.sky.animal_shelter_ji22_team1_app.repository.ShelterRepository;
-import pro.sky.animal_shelter_ji22_team1_app.service.ShelterService;
+import pro.sky.animal_shelter_ji22_team1_app.report_safer.ReportSafer;
 import pro.sky.animal_shelter_ji22_team1_app.user_safer.UserSafer;
 
+import java.io.*;
+import java.net.URL;
 import java.util.List;
 
 @Component
@@ -21,17 +25,15 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
     private final RemoteControl remoteControl;
-    @Autowired
-    private ShelterService shelterService;
-
-
     private final UserSafer userSafer;
+    private final ReportSafer reportSafer;
 
     public TelegramBotUpdatesListener(TelegramBot telegramBot, RemoteControl remoteControl,
-                                      UserSafer userSafer) {
+                                      UserSafer userSafer, ReportSafer reportSafer) {
         this.telegramBot = telegramBot;
         this.remoteControl = remoteControl;
         this.userSafer = userSafer;
+        this.reportSafer = reportSafer;
     }
 
     @PostConstruct
@@ -43,11 +45,37 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
 
-            if (update.message() != null) {
+            Long chatId = update.message().chat().id();
+
+            if (update.message().photo() != null) {
+                PhotoSize[] photoSizes = update.message().photo();
+                PhotoSize photoSize = photoSizes[0];
+                String fileId = photoSize.fileId();
+
+                GetFile request = new GetFile(fileId);
+                GetFileResponse getFileResponse = telegramBot.execute(request);
+
+                File file = getFileResponse.file();
+
+                String fullPath = telegramBot.getFullFilePath(file);
+                URL url = null;
+                try {
+                    url = new URL(fullPath);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+                try (BufferedInputStream bis = new BufferedInputStream(url.openStream());) {
+                    reportSafer.SafePhoto(update, bis.readAllBytes());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+
+            if (update.message().text() != null) {
 
                 userSafer.saveUser(update);
-
-                Long chatId = update.message().chat().id();
 
                 switch (update.message().text()) {
 
@@ -56,7 +84,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 //                                                                                          Menu Command from Point#1
                     case "/shelter_info" -> sendMessage(chatId, remoteControl.shelterInfo());
 //                                                                                          Menu Command from Point#2
-                    case "/entry" -> sendMessage(chatId, remoteControl.entry());
+                    case "/shelter_entry" -> sendMessage(chatId, remoteControl.entry());
 //                                                                                          for choosing types of animals
                     case "/dog" -> sendMessage(chatId, remoteControl.dog());
                     case "/cat" -> sendMessage(chatId, remoteControl.cat());
@@ -78,40 +106,65 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 //                                                                                          for cats
                     case "/cat_rules" -> sendMessage(chatId, remoteControl.catRules());
 //                                                                                          Menu Command from Point#3
-                    case "/daily_report_form" -> sendMessage(chatId, remoteControl.dailyReportForm());
-//                                                                                      ...
-                    case "/location" -> {
-                        SendPhoto sendPhoto = new SendPhoto(chatId,shelterService.findFirst().getLocationSchemeData());
-                        SendResponse sendResponse = telegramBot.execute(sendPhoto);
-                        sendMessage(chatId, remoteControl.location());
+                    case "/daily_report_form" -> {
+                        sendMessage(chatId, remoteControl.dailyReportForm());
+                        reportSafer.saveReport(update);
                     }
+//                                                                                      ...
+                    case "/shelter_rules" -> sendMessage(chatId, remoteControl.shelterRules());
+                    case "/address_dogs" -> sendMessage(chatId, remoteControl.addressDogs());
+                    case "/address_cats" -> sendMessage(chatId, remoteControl.addressCats());
+//
+                    case "/location_dogs" -> sendImage(chatId, remoteControl.locationDogs());
+                    case "/location_cats" -> sendImage(chatId, remoteControl.locationCats());
 
-                    case "/shelter_contacts" -> sendMessage(chatId, remoteControl.shelterContacts());
+                    case "/schedule_dogs" -> sendMessage(chatId, remoteControl.schedulerDogs());
+                    case "/schedule_cats" -> sendMessage(chatId, remoteControl.schedulerCats());
+
+                    case "/shelter_dogs_contacts" -> sendMessage(chatId, remoteControl.shelterDogsContacts());
+                    case "/shelter_cats_contacts" -> sendMessage(chatId, remoteControl.shelterCatsContacts());
 
                     case "/health_and_safety" -> sendMessage(chatId, remoteControl.heathAndSafety());
 
                     case "/client_contacts" -> sendMessage(chatId, remoteControl.clientContacts());
+
                     case "/firstname" -> sendMessage(chatId, "Введите имя в формате: firstname Имя");
                     case "/surname" -> sendMessage(chatId, "Введите отчество в формате: surname Отчество");
                     case "/lastname" -> sendMessage(chatId, "Введите фамилию в формате: lastname Фамилия");
                     case "/phone" -> sendMessage(chatId,
                             "Введите номер контактного телефона в формате: +7 999 999 99-99");
+
+                    case "/pet_photo" -> sendMessage(chatId, "Отправьте фото питомца");
+                    case "/pet_diet" -> sendMessage(chatId, "Отправьте рацион питомца в формате: diet ________");
+                    case "/pet_general" -> sendMessage(chatId, "Отправьте информацию о общем самочувствии" +
+                                                               " питомца в формате: general ________");
+                    case "/pet_behavior" -> sendMessage(chatId, "Отправьте информацию об изменениях в " +
+                                                                "поведении питомца в формата: behavior ______________");
 //                                                                                          No such command
                     default -> {
-                        if (update.message().text().matches("firstname\\s\\w+")) {
+                        if (update.message().text().matches("firstname\\s.+")) {
                             userSafer.safeFirstname(update);
-                            sendMessage(chatId, "имя сохранено");
-                        } else if (update.message().text().matches("surname\\s\\w+")) {
+                            sendMessage(chatId, "Принято");
+                        } else if (update.message().text().matches("surname\\s.+")) {
                             userSafer.safeSurname(update);
-                            sendMessage(chatId, "имя сохранено");
-                        } else if (update.message().text().matches("lastname\\s\\w+")) {
+                            sendMessage(chatId, "Принято");
+                        } else if (update.message().text().matches("lastname\\s.+")) {
                             userSafer.safeLastname(update);
-                            sendMessage(chatId, "имя сохранено");
+                            sendMessage(chatId, "Принято");
                         } else if (update.message().text().matches("\\+7\\s\\d{3}\\s\\d{3}\\s\\d{2}-\\d{2}")) {
                             userSafer.safePhone(update);
-                            sendMessage(chatId, "имя сохранено");
+                            sendMessage(chatId, "Принято");
+                        } else if (update.message().text().matches("diet\\s.+")) {
+                            reportSafer.saveDiet(update);
+                            sendMessage(chatId, "Принято");
+                        } else if (update.message().text().matches("general\\s.+")) {
+                            reportSafer.saveGeneral(update);
+                            sendMessage(chatId, "Принято");
+                        } else if (update.message().text().matches("behavior\\s.+")) {
+                            reportSafer.saveBehavior(update);
+                            sendMessage(chatId, "Принято");
                         } else {
-                            sendMessage(chatId, "такой команды не существует. Вы можете вызвать справку" +
+                            sendMessage(chatId, "Такой команды не существует. Вы можете вызвать справку" +
                                                 " командой /help");
                         }
                     }
@@ -124,6 +177,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private void sendMessage(Long chatId, String text) {
         SendMessage message = new SendMessage(chatId, text);
         SendResponse response = telegramBot.execute(message);
+    }
+
+    private void sendImage(Long chatId, byte[] location) {
+        SendPhoto sendPhoto = new SendPhoto(chatId, location);
+        SendResponse response = telegramBot.execute(sendPhoto);
     }
 
 }

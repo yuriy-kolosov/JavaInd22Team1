@@ -145,7 +145,7 @@ public class ShelterControllerWithMockTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(SHELTER1_ID))
                 .andExpect(jsonPath("$.name").value(SHELTER1_NAME))
-                .andExpect(jsonPath("$.type").value(SHELTER1_TYPE))
+                .andExpect(jsonPath("$.type").value(SHELTER1_TYPE_STRING))
                 .andExpect(jsonPath("$.contacts").value(SHELTER1_CONTACTS))
                 .andExpect(jsonPath("$.mediaType").value(SHELTER1_MEDIA_TYPE))
                 .andExpect(jsonPath("$.rules").value(SHELTER1_RULES));
@@ -238,7 +238,7 @@ public class ShelterControllerWithMockTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(SHELTER1_ID))
                 .andExpect(jsonPath("$.name").value(SHELTER1_NAME))
-                .andExpect(jsonPath("$.type").value(SHELTER1_TYPE))
+                .andExpect(jsonPath("$.type").value(SHELTER1_TYPE_STRING))
                 .andExpect(jsonPath("$.contacts").value(SHELTER1_CONTACTS))
                 .andExpect(jsonPath("$.mediaType").value(SHELTER1_MEDIA_TYPE))
                 .andExpect(jsonPath("$.rules").value(SHELTER1_RULES));
