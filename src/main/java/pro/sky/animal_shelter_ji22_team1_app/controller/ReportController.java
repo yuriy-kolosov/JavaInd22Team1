@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.animal_shelter_ji22_team1_app.entity.ReportEntity;
-import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
 import pro.sky.animal_shelter_ji22_team1_app.exception.ErrorDto;
 import pro.sky.animal_shelter_ji22_team1_app.service.ReportService;
 
