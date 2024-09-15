@@ -20,7 +20,6 @@ public class ReportEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @JsonIgnore
-    @Lob
     private byte[] animalPhoto;
     private String diet;
     private String mediaType;
