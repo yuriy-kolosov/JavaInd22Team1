@@ -53,3 +53,6 @@ databaseChangeLog:
   - include:
       file:
         - liquibase/scripts/add_type_at_recommendations.sql
+  - include:
+      file:
+        - liquibase/scripts/fill_recommendations_with_test_data.sql
