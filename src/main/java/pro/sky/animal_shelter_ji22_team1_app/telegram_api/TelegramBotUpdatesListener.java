@@ -14,7 +14,6 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 import pro.sky.animal_shelter_ji22_team1_app.command.RemoteControl;
 import pro.sky.animal_shelter_ji22_team1_app.report_safer.ReportSafer;
-import pro.sky.animal_shelter_ji22_team1_app.repository.ReportRepository;
 import pro.sky.animal_shelter_ji22_team1_app.user_safer.UserSafer;
 
 import java.io.*;
@@ -28,15 +27,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final RemoteControl remoteControl;
     private final UserSafer userSafer;
     private final ReportSafer reportSafer;
-    private final ReportRepository reportRepository;
 
     public TelegramBotUpdatesListener(TelegramBot telegramBot, RemoteControl remoteControl,
-                                      UserSafer userSafer, ReportSafer reportSafer, ReportRepository reportRepository) {
+                                      UserSafer userSafer, ReportSafer reportSafer) {
         this.telegramBot = telegramBot;
         this.remoteControl = remoteControl;
         this.userSafer = userSafer;
         this.reportSafer = reportSafer;
-        this.reportRepository = reportRepository;
     }
 
     @PostConstruct
@@ -68,24 +65,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     throw new RuntimeException(e);
                 }
 
-                try (InputStream is = url.openStream();
-                     ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-                    byte[] buffer = new byte[32768];
-
-                    while (true) {
-                        int readBytesCount = is.read(buffer);
-                        if (readBytesCount == -1) {
-                            break;
-                        }
-                        if (readBytesCount > 0) {
-                            baos.write(buffer, 0, readBytesCount);
-                        }
-                    }
-                    baos.flush();
-                    baos.close();
-                    byte[] bytes = baos.toByteArray();
-
-                    reportSafer.SafePhoto(update, bytes);
+                try (BufferedInputStream bis = new BufferedInputStream(url.openStream());) {
+                    reportSafer.SafePhoto(update, bis.readAllBytes());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
