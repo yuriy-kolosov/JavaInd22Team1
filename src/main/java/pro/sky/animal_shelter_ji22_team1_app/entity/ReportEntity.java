@@ -27,6 +27,8 @@ public class ReportEntity {
     private String behavior;
     private LocalDateTime reportDate;
     private boolean isAccepted;
+    private String comment;
+    private boolean isSent;
 
     @ManyToOne
     private UserEntity user;
@@ -34,14 +36,17 @@ public class ReportEntity {
     public ReportEntity() {
     }
 
-    public ReportEntity(Long id,
-                        String diet,
-                        String mediaType,
-                        String general,
-                        String behavior,
-                        LocalDateTime reportDate,
-                        boolean isAccepted,
-                        UserEntity user) {
+    public ReportEntity(Long id
+            , byte[] animalPhoto
+            , String diet
+            , String mediaType
+            , String general
+            , String behavior
+            , LocalDateTime reportDate
+            , boolean isAccepted
+            , String comment
+            , boolean isSent
+            , UserEntity user) {
         this.id = id;
         this.animalPhoto = animalPhoto;
         this.diet = diet;
@@ -50,6 +55,8 @@ public class ReportEntity {
         this.behavior = behavior;
         this.reportDate = reportDate;
         this.isAccepted = isAccepted;
+        this.comment = comment;
+        this.isSent = isSent;
         this.user = user;
     }
 
@@ -109,12 +116,28 @@ public class ReportEntity {
         this.reportDate = reportDate;
     }
 
-    public Boolean getAccepted() {
+    public boolean isAccepted() {
         return isAccepted;
     }
 
-    public void setAccepted(Boolean accepted) {
+    public void setAccepted(boolean accepted) {
         isAccepted = accepted;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public boolean isSent() {
+        return isSent;
+    }
+
+    public void setSent(boolean sent) {
+        isSent = sent;
     }
 
     public UserEntity getUser() {
@@ -135,21 +158,24 @@ public class ReportEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hashCode(id);
     }
 
     @Override
     public String toString() {
         return "ReportEntity{" +
-               "id=" + id +
-               ", animalPhoto=" + Arrays.toString(animalPhoto) +
-               ", diet='" + diet + '\'' +
-               ", mediaType='" + mediaType + '\'' +
-               ", general='" + general + '\'' +
-               ", behavior='" + behavior + '\'' +
-               ", reportDate=" + reportDate +
-               ", isAccepted=" + isAccepted +
-               ", user=" + user +
-               '}';
+                "id=" + id +
+                ", animalPhoto=" + Arrays.toString(animalPhoto) +
+                ", diet='" + diet + '\'' +
+                ", mediaType='" + mediaType + '\'' +
+                ", general='" + general + '\'' +
+                ", behavior='" + behavior + '\'' +
+                ", reportDate=" + reportDate +
+                ", isAccepted=" + isAccepted +
+                ", comment='" + comment + '\'' +
+                ", isSent=" + isSent +
+                ", user=" + user +
+                '}';
     }
+
 }
