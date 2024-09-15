@@ -2,18 +2,23 @@ package pro.sky.animal_shelter_ji22_team1_app.telegram_api;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.File;
+import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
+import com.pengrad.telegrambot.response.GetFileResponse;
 import com.pengrad.telegrambot.response.SendResponse;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.animal_shelter_ji22_team1_app.command.RemoteControl;
 import pro.sky.animal_shelter_ji22_team1_app.report_safer.ReportSafer;
-import pro.sky.animal_shelter_ji22_team1_app.service.ShelterService;
+import pro.sky.animal_shelter_ji22_team1_app.repository.ReportRepository;
 import pro.sky.animal_shelter_ji22_team1_app.user_safer.UserSafer;
 
+import java.io.*;
+import java.net.URL;
 import java.util.List;
 
 @Component
@@ -23,13 +28,15 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final RemoteControl remoteControl;
     private final UserSafer userSafer;
     private final ReportSafer reportSafer;
+    private final ReportRepository reportRepository;
 
     public TelegramBotUpdatesListener(TelegramBot telegramBot, RemoteControl remoteControl,
-                                      UserSafer userSafer,ReportSafer reportSafer) {
+                                      UserSafer userSafer, ReportSafer reportSafer, ReportRepository reportRepository) {
         this.telegramBot = telegramBot;
         this.remoteControl = remoteControl;
         this.userSafer = userSafer;
         this.reportSafer = reportSafer;
+        this.reportRepository = reportRepository;
     }
 
     @PostConstruct
@@ -40,11 +47,58 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
-            if (update.message() != null) {
+
+            Long chatId = update.message().chat().id();
+
+            if (update.message().photo() != null) {
+                PhotoSize[] photoSizes = update.message().photo();
+                PhotoSize photoSize = photoSizes[0];
+                String fileId = photoSize.fileId();
+                sendMessage(chatId, photoSize.toString());
+
+                GetFile request = new GetFile(fileId);
+                GetFileResponse getFileResponse = telegramBot.execute(request);
+
+                File file = getFileResponse.file();
+
+                String fullPath = telegramBot.getFullFilePath(file);
+                sendMessage(chatId, fullPath);
+                URL url = null;
+                try {
+                    url = new URL(fullPath);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+                try (InputStream is = url.openStream();
+                     ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                    byte[] buffer = new byte[32768];
+
+                    while (true) {
+                        int readBytesCount = is.read(buffer);
+                        if (readBytesCount == -1) {
+                            break;
+                        }
+                        if (readBytesCount > 0) {
+                            baos.write(buffer, 0, readBytesCount);
+                        }
+                    }
+                    baos.flush();
+                    baos.close();
+                    byte[] bytes = baos.toByteArray();
+
+                    sendMessage(chatId, fullPath);
+
+                    reportSafer.SafePhoto(update, bytes);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+
+            if (update.message().text() != null) {
 
                 userSafer.saveUser(update);
-
-                Long chatId = update.message().chat().id();
 
                 switch (update.message().text()) {
 
@@ -123,7 +177,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         } else if (update.message().text().matches("\\+7\\s\\d{3}\\s\\d{3}\\s\\d{2}-\\d{2}")) {
                             userSafer.safePhone(update);
                             sendMessage(chatId, "Принято");
-                        }  else if (update.message().text().matches("diet\\s.+")) {
+                        } else if (update.message().text().matches("diet\\s.+")) {
                             reportSafer.saveDiet(update);
                             sendMessage(chatId, "Принято");
                         } else if (update.message().text().matches("general\\s.+")) {

@@ -38,18 +38,19 @@ public class ReportSafer {
         }
     }
 
-//    public void SafePhoto(Update update) {
-//        Long chatId = update.message().chat().id();
-//        UserEntity user = userRepository.findByChatId(chatId);
-//
-//        List<ReportEntity> reports = reportRepository.findByUserId(user.getId());
-//        ReportEntity report = reports.stream()
-//                .filter(r -> r.getReportDate().getDayOfYear() == LocalDateTime.now().getDayOfYear())
-//                .findFirst()
-//                .get();
-//
-//        report.setAnimalPhoto(update.message().;
-//    }
+    public void SafePhoto(Update update,  byte[] bytes) {
+        Long chatId = update.message().chat().id();
+        UserEntity user = userRepository.findByChatId(chatId);
+
+        List<ReportEntity> reports = reportRepository.findByUserId(user.getId());
+        ReportEntity report = reports.stream()
+                .filter(r -> r.getReportDate().getDayOfYear() == LocalDateTime.now().getDayOfYear())
+                .findFirst()
+                .get();
+
+        report.setAnimalPhoto(bytes);
+        reportRepository.save(report);
+    }
 
     public void saveDiet(Update update) {
         Long chatId = update.message().chat().id();
