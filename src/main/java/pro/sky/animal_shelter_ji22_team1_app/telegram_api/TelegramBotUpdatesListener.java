@@ -10,6 +10,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.animal_shelter_ji22_team1_app.command.RemoteControl;
+import pro.sky.animal_shelter_ji22_team1_app.report_safer.ReportSafer;
 import pro.sky.animal_shelter_ji22_team1_app.service.ShelterService;
 import pro.sky.animal_shelter_ji22_team1_app.user_safer.UserSafer;
 
@@ -20,17 +21,15 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
     private final RemoteControl remoteControl;
-    @Autowired
-    private ShelterService shelterService;
-
-
     private final UserSafer userSafer;
+    private final ReportSafer reportSafer;
 
     public TelegramBotUpdatesListener(TelegramBot telegramBot, RemoteControl remoteControl,
-                                      UserSafer userSafer) {
+                                      UserSafer userSafer,ReportSafer reportSafer) {
         this.telegramBot = telegramBot;
         this.remoteControl = remoteControl;
         this.userSafer = userSafer;
+        this.reportSafer = reportSafer;
     }
 
     @PostConstruct
@@ -77,7 +76,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 //                                                                                          for cats
                     case "/cat_rules" -> sendMessage(chatId, remoteControl.catRules());
 //                                                                                          Menu Command from Point#3
-                    case "/daily_report_form" -> sendMessage(chatId, remoteControl.dailyReportForm());
+                    case "/daily_report_form" -> {
+                        sendMessage(chatId, remoteControl.dailyReportForm());
+                        reportSafer.saveReport(update);
+                    }
 //                                                                                      ...
                     case "/shelter_rules" -> sendMessage(chatId, remoteControl.shelterRules());
                     case "/address_dogs" -> sendMessage(chatId, remoteControl.addressDogs());
@@ -101,6 +103,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     case "/lastname" -> sendMessage(chatId, "Введите фамилию в формате: lastname Фамилия");
                     case "/phone" -> sendMessage(chatId,
                             "Введите номер контактного телефона в формате: +7 999 999 99-99");
+
+                    case "/pet_photo" -> sendMessage(chatId, "Отправьте фото питомца");
+                    case "/pet_diet" -> sendMessage(chatId, "Отправьте рацион питомца в формате: diet ________");
+                    case "/pet_general" -> sendMessage(chatId, "Отправьте информацию о общем самочувствии" +
+                                                               " питомца в формате: general ________");
+                    case "/pet_behavior" -> sendMessage(chatId, "Отправьте информацию об изменениях в " +
+                                                                "поведении питомца в формата: behavior ______________");
 //                                                                                          No such command
                     default -> {
                         if (update.message().text().matches("firstname\\s\\w+")) {
@@ -115,9 +124,20 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         } else if (update.message().text().matches("\\+7\\s\\d{3}\\s\\d{3}\\s\\d{2}-\\d{2}")) {
                             userSafer.safePhone(update);
                             sendMessage(chatId, "Принято");
+                        } else if (update.message().photo() != null) {
+
+                        } else if (update.message().text().matches("diet\\s\\w+")) {
+                            reportSafer.saveDiet(update);
+                            sendMessage(chatId, "Принято");
+                        } else if (update.message().text().matches("general\\s\\w+")) {
+                            reportSafer.saveGeneral(update);
+                            sendMessage(chatId, "Принято");
+                        } else if (update.message().text().matches("behavior\\s\\w+")) {
+                            reportSafer.saveBehavior(update);
+                            sendMessage(chatId, "Принято");
                         } else {
                             sendMessage(chatId, "Такой команды не существует. Вы можете вызвать справку" +
-                                    " командой /help");
+                                                " командой /help");
                         }
                     }
                 }

@@ -1,8 +1,10 @@
 package pro.sky.animal_shelter_ji22_team1_app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -34,6 +36,13 @@ public class UserEntity {
 
     @Enumerated(EnumType.STRING)
     private Type type;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private AnimalEntity animal;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<ReportEntity> reports;
 
     public Long getId() {
         return id;
@@ -113,6 +122,22 @@ public class UserEntity {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public AnimalEntity getAnimal() {
+        return animal;
+    }
+
+    public void setAnimal(AnimalEntity animal) {
+        this.animal = animal;
+    }
+
+    public List<ReportEntity> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<ReportEntity> reports) {
+        this.reports = reports;
     }
 
     @Override

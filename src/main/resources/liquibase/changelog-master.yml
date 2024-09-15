@@ -56,3 +56,12 @@ databaseChangeLog:
   - include:
       file:
         - liquibase/scripts/fill_recommendations_with_test_data.sql
+  - include:
+      file:
+        - liquibase/scripts/add_animal_id_and_report_id_at_users.sql
+  - include:
+      file:
+        - liquibase/scripts/add_user_id_at_reports.sql
+  - include:
+      file:
+        - liquibase/scripts/change_table_reports.sql
