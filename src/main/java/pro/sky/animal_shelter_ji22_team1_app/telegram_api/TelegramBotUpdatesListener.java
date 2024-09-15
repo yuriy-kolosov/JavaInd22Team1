@@ -87,8 +87,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     baos.close();
                     byte[] bytes = baos.toByteArray();
 
-                    sendMessage(chatId, fullPath);
-
                     reportSafer.SafePhoto(update, bytes);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
