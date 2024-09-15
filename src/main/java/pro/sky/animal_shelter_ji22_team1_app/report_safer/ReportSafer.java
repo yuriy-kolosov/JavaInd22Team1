@@ -9,7 +9,6 @@ import pro.sky.animal_shelter_ji22_team1_app.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ReportSafer {
