@@ -1,12 +1,8 @@
 package pro.sky.animal_shelter_ji22_team1_app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
@@ -23,29 +19,39 @@ public class ReportEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long requestId;
     @JsonIgnore
     @Lob
     private byte[] animalPhoto;
     private String diet;
-    private String health;
-    private String addiction;
-    private String behaviorChanges;
+    private String mediaType;
+    private String general;
+    private String behavior;
     private LocalDateTime reportDate;
-    private String comment;
+    private boolean isAccepted;
+
+    @ManyToOne
+    private UserEntity user;
 
     public ReportEntity() {
     }
 
-    public ReportEntity(Long id, Long requestId, String diet, String health, String addiction, String behaviorChanges, LocalDateTime reportDate, String comment) {
+    public ReportEntity(Long id,
+                        String diet,
+                        String mediaType,
+                        String general,
+                        String behavior,
+                        LocalDateTime reportDate,
+                        boolean isAccepted,
+                        UserEntity user) {
         this.id = id;
-        this.requestId = requestId;
+        this.animalPhoto = animalPhoto;
         this.diet = diet;
-        this.health = health;
-        this.addiction = addiction;
-        this.behaviorChanges = behaviorChanges;
+        this.mediaType = mediaType;
+        this.general = general;
+        this.behavior = behavior;
         this.reportDate = reportDate;
-        this.comment = comment;
+        this.isAccepted = isAccepted;
+        this.user = user;
     }
 
     public Long getId() {
@@ -54,14 +60,6 @@ public class ReportEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(Long requestId) {
-        this.requestId = requestId;
     }
 
     public byte[] getAnimalPhoto() {
@@ -80,28 +78,28 @@ public class ReportEntity {
         this.diet = diet;
     }
 
-    public String getHealth() {
-        return health;
+    public String getMediaType() {
+        return mediaType;
     }
 
-    public void setHealth(String health) {
-        this.health = health;
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
     }
 
-    public String getAddiction() {
-        return addiction;
+    public String getGeneral() {
+        return general;
     }
 
-    public void setAddiction(String addiction) {
-        this.addiction = addiction;
+    public void setGeneral(String general) {
+        this.general = general;
     }
 
-    public String getBehaviorChanges() {
-        return behaviorChanges;
+    public String getBehavior() {
+        return behavior;
     }
 
-    public void setBehaviorChanges(String behaviorChanges) {
-        this.behaviorChanges = behaviorChanges;
+    public void setBehavior(String behavior) {
+        this.behavior = behavior;
     }
 
     public LocalDateTime getReportDate() {
@@ -112,45 +110,47 @@ public class ReportEntity {
         this.reportDate = reportDate;
     }
 
-    public String getComment() {
-        return comment;
+    public Boolean getAccepted() {
+        return isAccepted;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setAccepted(Boolean accepted) {
+        isAccepted = accepted;
     }
 
-    @Override public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         ReportEntity that = (ReportEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(requestId, that.requestId) && Arrays.equals(animalPhoto, that.animalPhoto) && Objects.equals(diet, that.diet) && Objects.equals(health, that.health) && Objects.equals(addiction,
-                                                                                                                                                                                                                                    that.addiction)
-                && Objects.equals(behaviorChanges, that.behaviorChanges) && Objects.equals(reportDate, that.reportDate) && Objects.equals(comment, that.comment);
+        return Objects.equals(id, that.id);
     }
 
-    @Override public int hashCode() {
-        int result = Objects.hash(id, requestId, diet, health, addiction, behaviorChanges, reportDate, comment);
-        result = 31 * result + Arrays.hashCode(animalPhoto);
-        return result;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "ReportEntity{" +
-                "id=" + id +
-                ", request_id=" + requestId +
-                ", animal_photo=" + Arrays.toString(animalPhoto) +
-                ", diet='" + diet + '\'' +
-                ", health='" + health + '\'' +
-                ", addiction='" + addiction + '\'' +
-                ", behaviorChanges='" + behaviorChanges + '\'' +
-                ", report_date=" + reportDate +
-                ", comment='" + comment + '\'' +
-                '}';
+               "id=" + id +
+               ", animalPhoto=" + Arrays.toString(animalPhoto) +
+               ", diet='" + diet + '\'' +
+               ", mediaType='" + mediaType + '\'' +
+               ", general='" + general + '\'' +
+               ", behavior='" + behavior + '\'' +
+               ", reportDate=" + reportDate +
+               ", isAccepted=" + isAccepted +
+               ", user=" + user +
+               '}';
     }
-
 }
