@@ -68,3 +68,6 @@ databaseChangeLog:
   - include:
       file:
         - liquibase/scripts/change_animal_photo_type_at_reports.sql
+  - include:
+      file:
+        - liquibase/scripts/add_comment_at_reports.sql

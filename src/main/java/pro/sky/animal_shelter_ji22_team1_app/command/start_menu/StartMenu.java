@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StartMenu {
+
     public String start() {
         return "Доброго времени суток, я бот, который помогает животным, оказавшимся в сложной ситуации, " +
                 "и людям, которые хотят найти себе нового пушистого друга, обрести то, что они ищут. " +
@@ -21,6 +22,13 @@ public class StartMenu {
 //                                                                          Point 3 commands
                 "\n/daily_report_form - прислать ежедневный отчет о содержании животного";
 //                                                                              ...
+    }
+
+    public String volunteer() {
+        return """
+                 "Сообщаем Вам номер контактного телефона службы волонтеров приюта:
+                 8 800 909 90-90
+                """;
     }
 
 }
