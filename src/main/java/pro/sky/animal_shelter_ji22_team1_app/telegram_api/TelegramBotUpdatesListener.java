@@ -40,7 +40,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
-
             if (update.message() != null) {
 
                 userSafer.saveUser(update);
@@ -112,27 +111,25 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                                                 "поведении питомца в формата: behavior ______________");
 //                                                                                          No such command
                     default -> {
-                        if (update.message().text().matches("firstname\\s\\w+")) {
+                        if (update.message().text().matches("firstname\\s.+")) {
                             userSafer.safeFirstname(update);
                             sendMessage(chatId, "Принято");
-                        } else if (update.message().text().matches("surname\\s\\w+")) {
+                        } else if (update.message().text().matches("surname\\s.+")) {
                             userSafer.safeSurname(update);
                             sendMessage(chatId, "Принято");
-                        } else if (update.message().text().matches("lastname\\s\\w+")) {
+                        } else if (update.message().text().matches("lastname\\s.+")) {
                             userSafer.safeLastname(update);
                             sendMessage(chatId, "Принято");
                         } else if (update.message().text().matches("\\+7\\s\\d{3}\\s\\d{3}\\s\\d{2}-\\d{2}")) {
                             userSafer.safePhone(update);
                             sendMessage(chatId, "Принято");
-                        } else if (update.message().photo() != null) {
-
-                        } else if (update.message().text().matches("diet\\s\\w+")) {
+                        }  else if (update.message().text().matches("diet\\s.+")) {
                             reportSafer.saveDiet(update);
                             sendMessage(chatId, "Принято");
-                        } else if (update.message().text().matches("general\\s\\w+")) {
+                        } else if (update.message().text().matches("general\\s.+")) {
                             reportSafer.saveGeneral(update);
                             sendMessage(chatId, "Принято");
-                        } else if (update.message().text().matches("behavior\\s\\w+")) {
+                        } else if (update.message().text().matches("behavior\\s.+")) {
                             reportSafer.saveBehavior(update);
                             sendMessage(chatId, "Принято");
                         } else {
