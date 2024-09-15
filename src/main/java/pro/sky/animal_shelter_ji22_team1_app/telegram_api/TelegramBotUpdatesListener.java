@@ -81,6 +81,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                     case "/start" -> sendMessage(chatId, remoteControl.start());
                     case "/help" -> sendMessage(chatId, remoteControl.help());
+                    case "/volunteer" -> sendMessage(chatId, remoteControl.help());
 //                                                                                          Menu Command from Point#1
                     case "/shelter_info" -> sendMessage(chatId, remoteControl.shelterInfo());
 //                                                                                          Menu Command from Point#2
