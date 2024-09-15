@@ -22,6 +22,10 @@ public class RemoteControl {
         return commands.get("helpCommand").execute();
     }
 
+    public String volunteer() {
+        return commands.get("volunteerCommand").execute();
+    }
+
     public String shelterInfo() {
         return commands.get("shelterInfoCommand").execute();
     }
