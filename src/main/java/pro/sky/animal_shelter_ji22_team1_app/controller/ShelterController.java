@@ -82,21 +82,21 @@ public class ShelterController {
             },
             tags = "shelters"
     )
-    @GetMapping("/{shelterId}")
-    public ResponseEntity<ShelterEntity> getShelter(@PathVariable Long shelterId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ShelterEntity> getShelter(@PathVariable Long id) {
 
         logger.debug("\"Get\" getShelter method was invoke...");
 
-        ShelterEntity shelter = shelterService.findShelterById(shelterId);
+        ShelterEntity shelter = shelterService.findShelterById(id);
         return ResponseEntity.ok(shelter);
     }
 
     @Operation(
-            summary = "Вывод информации о приюте из базы данных: адрес (схема проезда)",
+            summary = "Вывод информации о приюте с указанным номером (id) из базы данных: схема проезда",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Найден адрес приюта (схема проезда)",
+                            description = "Найдена схема проезда",
                             content = @Content(
                                     mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
                                     schema = @Schema(implementation = ShelterEntity.class)
@@ -104,7 +104,7 @@ public class ShelterController {
                     ),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Адрес приюта (схема приезда) не найдена",
+                            description = "Схема проезда не найдена",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ErrorDto.class)
@@ -113,12 +113,12 @@ public class ShelterController {
             },
             tags = "shelters"
     )
-    @GetMapping("/location/{shelterId}")
-    public ResponseEntity<byte[]> getShelterLocationScheme(@PathVariable Long shelterId) {
+    @GetMapping("/location/{id}")
+    public ResponseEntity<byte[]> getShelterLocationScheme(@PathVariable Long id) {
 
         logger.debug("\"Get\" getShelterLocationScheme method was invoke...");
 
-        ShelterEntity shelter = shelterService.findShelterById(shelterId);
+        ShelterEntity shelter = shelterService.findShelterById(id);
 
         byte[] schemeFile = shelter.getLocationSchemeData();
         if (schemeFile != null) {
@@ -179,7 +179,7 @@ public class ShelterController {
     }
 
     @Operation(
-            summary = "Добавление/изменение информации в базе данных приюта: адрес (схема проезда)",
+            summary = "Добавление/изменение информации в базе данных приюта: схема проезда",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -200,14 +200,14 @@ public class ShelterController {
             },
             tags = "shelters"
     )
-    @PutMapping(value = "/location/{shelterId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ShelterEntity> addShelterLocationScheme(@PathVariable Long shelterId
+    @PutMapping(value = "/location/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ShelterEntity> addShelterLocationScheme(@PathVariable Long id
             , @RequestParam MultipartFile shelterLocationSchemeFile) throws IOException {
 
         logger.debug("\"Put\" addShelterLocationScheme method was invoke...");
 
-        shelterService.saveShelterLocationScheme(shelterId, shelterLocationSchemeFile);
-        ShelterEntity shelter = shelterService.findShelterById(shelterId);
+        shelterService.saveShelterLocationScheme(id, shelterLocationSchemeFile);
+        ShelterEntity shelter = shelterService.findShelterById(id);
         return ResponseEntity.ok(shelter);
     }
 
@@ -233,13 +233,13 @@ public class ShelterController {
             },
             tags = "shelters"
     )
-    @DeleteMapping("/{shelterId}")
-    public ResponseEntity<Long> deleteShelter(@PathVariable Long shelterId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Long> deleteShelter(@PathVariable Long id) {
 
         logger.debug("\"Delete\" deleteShelter method was invoke...");
 
-        shelterService.deleteShelter(shelterId);
-        return ResponseEntity.ok(shelterId);
+        shelterService.deleteShelter(id);
+        return ResponseEntity.ok(id);
     }
 
 }
