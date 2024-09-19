@@ -71,9 +71,9 @@ public class ReportController {
             },
             tags = "reports"
     )
-    @GetMapping("/{reportId}")
-    public ResponseEntity<ReportEntity> getById(@PathVariable Long reportId) {
-        ReportEntity report = reportService.findById(reportId);
+    @GetMapping("/{id}")
+    public ResponseEntity<ReportEntity> getById(@PathVariable Long id) {
+        ReportEntity report = reportService.findById(id);
         return ResponseEntity.ok(report);
     }
 
