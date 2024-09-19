@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
-import pro.sky.animal_shelter_ji22_team1_app.user.exception.ErrorDto;
+import pro.sky.animal_shelter_ji22_team1_app.exception.ErrorDto;
 import pro.sky.animal_shelter_ji22_team1_app.service.UserService;
 
 import java.util.Collection;
@@ -36,7 +36,7 @@ public class UserController {
                             )
                     )
             },
-            tags = "Users"
+            tags = "users"
     )
     @GetMapping
     public ResponseEntity<Collection<UserEntity>> getAllUsers() {
@@ -64,7 +64,7 @@ public class UserController {
                             )
                     )
             },
-            tags = "User"
+            tags = "users"
     )
     @GetMapping("/{userId}")
     public ResponseEntity<UserEntity> getUser(@PathVariable Long userId) {
@@ -81,7 +81,7 @@ public class UserController {
                             schema = @Schema(implementation = UserEntity.class)
                     )
             ),
-            tags = "Users"
+            tags = "users"
     )
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody UserEntity user) {
@@ -98,12 +98,11 @@ public class UserController {
                             schema = @Schema(implementation = UserEntity.class)
                     )
             ),
-            tags = "Users"
+            tags = "users"
     )
     @PutMapping()
     public ResponseEntity<UserEntity> changeUser(@RequestBody UserEntity user) {
-        UserEntity
-                changedUser = userService.change(user);
+        UserEntity changedUser = userService.change(user);
         return ResponseEntity.ok(changedUser);
     }
 
@@ -127,7 +126,7 @@ public class UserController {
                             )
                     )
             },
-            tags = "Users"
+            tags = "users"
     )
     @DeleteMapping("/{userId}")
     public ResponseEntity<Long> deleteUser(@PathVariable Long userId) {

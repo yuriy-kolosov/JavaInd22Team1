@@ -1,13 +1,14 @@
 package pro.sky.animal_shelter_ji22_team1_app.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import pro.sky.animal_shelter_ji22_team1_app.entity.ShelterEntity;
-import pro.sky.animal_shelter_ji22_team1_app.exception.ShelterDoesNotExistException;
-
+import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 public interface ShelterService {
 
-    List<ShelterEntity> findAllShelters();
+    Collection<ShelterEntity> findAllShelters();
 
     ShelterEntity findShelterById(Long shelterId);
 
@@ -15,6 +16,10 @@ public interface ShelterService {
 
     ShelterEntity changeShelter(ShelterEntity shelter);
 
+    void saveShelterLocationScheme(Long shelterId, MultipartFile shelterLocationSchemeFile) throws IOException;
+
     void deleteShelter(Long shelterId);
+
+    ShelterEntity findFirst();
 
 }

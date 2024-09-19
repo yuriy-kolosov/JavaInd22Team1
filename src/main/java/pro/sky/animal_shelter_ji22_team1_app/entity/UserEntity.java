@@ -1,8 +1,10 @@
 package pro.sky.animal_shelter_ji22_team1_app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -16,19 +18,31 @@ public class UserEntity {
     private String firstname;
 
     @Column(name = "s_name")
-    private String secondname;
+    private String surname;
 
     @Column(name = "l_name")
     private String lastname;
 
     private String login;
 
-    private Long phone;
+    private String phone;
 
     @Column(name = "reg_date")
     private LocalDateTime registrationDate;
 
     private String comment;
+    @Column(name = "chat_id")
+    private Long chatId;
+
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private AnimalEntity animal;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<ReportEntity> reports;
 
     public Long getId() {
         return id;
@@ -46,12 +60,12 @@ public class UserEntity {
         this.firstname = firstname;
     }
 
-    public String getSecondname() {
-        return secondname;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setSecondname(String secondname) {
-        this.secondname = secondname;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getLastname() {
@@ -70,11 +84,11 @@ public class UserEntity {
         this.login = login;
     }
 
-    public Long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -94,16 +108,48 @@ public class UserEntity {
         this.comment = comment;
     }
 
+    public Long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public AnimalEntity getAnimal() {
+        return animal;
+    }
+
+    public void setAnimal(AnimalEntity animal) {
+        this.animal = animal;
+    }
+
+    public List<ReportEntity> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<ReportEntity> reports) {
+        this.reports = reports;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(firstname, that.firstname) && Objects.equals(secondname, that.secondname) && Objects.equals(lastname, that.lastname) && Objects.equals(login, that.login);
+        return Objects.equals(id, that.id) && Objects.equals(firstname, that.firstname) && Objects.equals(surname, that.surname) && Objects.equals(lastname, that.lastname) && Objects.equals(login, that.login);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, secondname, lastname, login);
+        return Objects.hash(id, firstname, surname, lastname, login);
     }
 }

@@ -1,3 +1,76 @@
 databaseChangeLog:
   - include:
-      file: liquibase/scripts/schema.sql
+      file:
+        - liquibase/scripts/schema.sql
+  - include:
+      file:
+        - liquibase/scripts/add_table_shelter.sql
+  - include:
+      file:
+        - liquibase/scripts/change_data_type_user_phone.sql
+  - include:
+      file:
+        - liquibase/scripts/add_chat_id_at_user.sql
+  - include:
+      file:
+        - liquibase/scripts/change_data_type_users_type.sql
+  - include:
+      file:
+        - liquibase/scripts/change_data_type_animals_age.sql
+  - include:
+      file:
+        - liquibase/scripts/change_data_type_users_chat_id.sql
+  - include:
+      file:
+        - liquibase/scripts/drop_not_null_attributes_at_user.sql
+  - include:
+      file:
+        - liquibase/scripts/drop_not_null_of_phone_names_at_user.sql
+  - include:
+      file:
+        - liquibase/scripts/change_data_type_volunteers_phone.sql
+  - include:
+      file:
+        - liquibase/scripts/add_chat_id_at_volunteer.sql
+  - include:
+      file:
+        - liquibase/scripts/add_attributes_at_shelters.sql
+  - include:
+      file:
+        - liquibase/scripts/drop_column_directions_at_shelters.sql
+  - include:
+      file:
+        - liquibase/scripts/drop_not_null_location_scheme_at_shelters.sql
+  - include:
+      file:
+        - liquibase/scripts/add_table_reports.sql
+  - include:
+      file:
+        - liquibase/scripts/add_type_at_animals.sql
+  - include:
+      file:
+        - liquibase/scripts/add_description_at_recommendations.sql
+  - include:
+      file:
+        - liquibase/scripts/add_type_at_recommendations.sql
+  - include:
+      file:
+        - liquibase/scripts/fill_recommendations_with_test_data.sql
+  - include:
+      file:
+        - liquibase/scripts/add_animal_id_and_report_id_at_users.sql
+  - include:
+      file:
+        - liquibase/scripts/add_user_id_at_reports.sql
+  - include:
+      file:
+        - liquibase/scripts/change_table_reports.sql
+  - include:
+      file:
+        - liquibase/scripts/change_animal_photo_type_at_reports.sql
+  - include:
+      file:
+        - liquibase/scripts/add_comment_at_reports.sql
+  - include:
+      file:
+        - liquibase/scripts/add_is_sent_at_reports.sql
