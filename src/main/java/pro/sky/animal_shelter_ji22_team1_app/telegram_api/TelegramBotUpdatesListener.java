@@ -57,17 +57,19 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 //                      Ежедневный интервал времени рассылки сообщений усыновителям в период их испытательного срока:
 //                                                                          12:00 - 12:05 (локальное время сервера)
             LocalTime localTimeScheduler1 = LocalTime.of(12, 0, 0, 0);
-            LocalTime localTimeScheduler2 = LocalTime.of(12, 0, 0, 0);
+            LocalTime localTimeScheduler2 = LocalTime.of(12, 5, 0, 0);
             Map<Long, String> messages;
 
             if (localTimeCurrent.isAfter(localTimeScheduler1)
                     & localTimeCurrent.isBefore(localTimeScheduler2)) {
 
-                messages = messageScheduler.messageSender();
+                messages = messageScheduler.messageCollector();
                 for (Map.Entry<Long, String> entry : messages.entrySet()) {
-                    sendMessage(entry.getKey(), entry.getValue());
+                    if (entry.getValue() != null) {
+                        sendMessage(entry.getKey(), entry.getValue());
+                    }
                 }
-                messageScheduler.messageSenderFlag();
+                messageScheduler.messageComplete();
             }
 //                                                                  Прием фото от усыновителя
             if (update.message().photo() != null) {

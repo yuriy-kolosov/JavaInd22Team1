@@ -2,6 +2,7 @@ package pro.sky.animal_shelter_ji22_team1_app.message_scheduler;
 
 import org.springframework.stereotype.Component;
 import pro.sky.animal_shelter_ji22_team1_app.entity.UserEntity;
+import pro.sky.animal_shelter_ji22_team1_app.exception.UserDoesNotExistException;
 import pro.sky.animal_shelter_ji22_team1_app.repository.ReportRepository;
 import pro.sky.animal_shelter_ji22_team1_app.repository.UserRepository;
 
@@ -33,36 +34,39 @@ public class MessageScheduler {
     LocalDateTime localDateTime = LocalDateTime.now();
     LocalDate localDate = localDateTime.toLocalDate();
 
-    public Map<Long, String> messageSender() {
-        reportRepository.findAll().stream()
-                .filter((r) -> r.getReportDate().toLocalDate().isEqual(localDate))
-                .filter((c) -> c.getComment() != null)
-                .filter((i) -> !i.isSent())
-                .forEach((s) -> {
-                    Optional<Long> found = Optional.empty();
-                    for (UserEntity u : userRepository.findAll()) {
-                        if (u.getId().equals(s.getUser().getId())) {
-                            Long chatId = u.getChatId();
-                            found = Optional.of(chatId);
-                            break;
-                        }
-                    }
-                    messagesMap
-                            .put(found.orElseThrow()
-                                    , s.getComment());
-                });
+    public Map<Long, String> messageCollector() {
+        try {
+            reportRepository.findAll().stream()
+                    .filter((r) -> r.getReportDate().toLocalDate().isEqual(localDate))
+                    .filter((c) -> c.getComment() != null)
+                    .filter((i) -> !i.isSent())
+                    .forEach((s) -> userRepository.findAll().stream()
+                            .filter((u) -> u.getId().equals(s.getUser().getId()))
+                            .map((f) -> Optional.of(f.getChatId()).orElseThrow())
+                            .forEach((d) -> messagesMap.put(d, s.getComment())));
+        } catch (UserDoesNotExistException e) {
+            throw new UserDoesNotExistException("Пользователь не найден");
+        }
         return messagesMap;
     }
 
-    public void messageSenderFlag() {
-        reportRepository.findAll().stream()
-                .filter((r) -> r.getReportDate().toLocalDate().isEqual(localDate))
-                .filter((c) -> c.getComment() != null)
-                .filter((i) -> !i.isSent())
-                .forEach((s) -> {
-                    s.setSent(true);
-                    reportRepository.save(s);
-                });
+    public void messageComplete() {
+        try {
+            reportRepository.findAll().stream()
+                    .filter((r) -> r.getReportDate().toLocalDate().isEqual(localDate))
+                    .filter((c) -> c.getComment() != null)
+                    .filter((i) -> !i.isSent())
+                    .forEach((s) -> {
+                        s.setSent(true);
+                        reportRepository.save(s);
+                        userRepository.findAll().stream()
+                                .filter((u) -> u.getId().equals(s.getUser().getId()))
+                                .map((f) -> Optional.of(f.getChatId()).orElseThrow())
+                                .forEach((d) -> messagesMap.put(d, null));
+                    });
+        } catch (UserDoesNotExistException e) {
+            throw new UserDoesNotExistException("Пользователь не найден");
+        }
     }
 
 }
